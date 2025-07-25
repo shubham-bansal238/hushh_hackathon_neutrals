@@ -1,0 +1,145 @@
+[
+  {
+    "id": 1,
+    "price": "8300",
+    "canonical_name": "Logitech C920 HD Pro Webcam",
+    "aliases": [
+      "Logitech C920",
+      "C920 Webcam",
+      "Logitech Webcam C920",
+      "C920 HD Pro"
+    ],
+    "context_keywords": [
+      "video conferencing",
+      "streaming",
+      "Skype",
+      "Zoom",
+      "YouTube",
+      "recording",
+      "online meetings",
+      "virtual events",
+      "live streaming",
+      "web conferencing",
+      "online classes",
+      "remote work"
+    ]
+  },
+  {
+    "id": 2,
+    "price": "6800",
+    "canonical_name": "Apple Magic Mouse 2",
+    "aliases": [
+      "Magic Mouse 2",
+      "Apple Wireless Mouse",
+      "MM2"
+    ],
+    "context_keywords": [
+      "scroll",
+      "click",
+      "navigate",
+      "browse",
+      "Mac",
+      "iMac",
+      "MacBook",
+      "desktop",
+      "laptop",
+      "computer",
+      "mouse gestures"
+    ]
+  },
+  {
+    "id": 3,
+    "price": "21990",
+    "canonical_name": "Sony WH-1000XM4 Wireless Noise Cancelling Headphones",
+    "aliases": [
+      "Sony WH1000XM4",
+      "Sony 1000XM4",
+      "WH-1000XM4",
+      "Sony Noise Cancelling Headphones"
+    ],
+    "context_keywords": [
+      "listen",
+      "music",
+      "podcasts",
+      "commute",
+      "travel",
+      "noise cancellation",
+      "audio",
+      "voice assistant",
+      "Alexa",
+      "Google Assistant",
+      "Siri"
+    ]
+  },
+  {
+    "id": 4,
+    "price": "33990",
+    "canonical_name": "Canon EOS 1500D DSLR Camera",
+    "aliases": [
+      "Canon EOS 1500D",
+      "EOS 1500D DSLR",
+      "Canon 1500D Camera",
+      "Canon EOS DSLR Camera"
+    ],
+    "context_keywords": [
+      "photography",
+      "capture",
+      "shoot",
+      "edit",
+      "Adobe Lightroom",
+      "Photoshop",
+      "capture moments",
+      "portrait",
+      "landscape",
+      "travel"
+    ]
+  },
+  {
+    "id": 5,
+    "price": "7499",
+    "canonical_name": "HyperX Cloud II Gaming Headset",
+    "aliases": [
+      "HyperX Cloud 2",
+      "Cloud II Gaming Headphones",
+      "HyperX Cloud II Headset",
+      "Cloud 2 Gaming Headset"
+    ],
+    "context_keywords": [
+      "gaming",
+      "play",
+      "stream",
+      "record",
+      "Skype",
+      "Discord",
+      "TeamSpeak",
+      "Fortnite",
+      "League of Legends",
+      "Minecraft",
+      "PC gaming",
+      "console gaming"
+    ]
+  },
+  {
+    "id": 6,
+    "price": "13999",
+    "canonical_name": "Amazon Kindle Paperwhite 11th Generation",
+    "aliases": [
+      "Kindle Paperwhite 2023",
+      "Kindle Paperwhite 11",
+      "Paperwhite 11th Gen",
+      "Kindle eReader"
+    ],
+    "context_keywords": [
+      "read",
+      "ebook",
+      "audiobook",
+      "library",
+      "download",
+      "Amazon",
+      "Goodreads",
+      "Kindle app",
+      "e-ink",
+      "reading"
+    ]
+  }
+]
