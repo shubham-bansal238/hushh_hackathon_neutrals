@@ -31,14 +31,15 @@ def authenticate_google():
         return
     return build('gmail', 'v1', credentials=creds)
 
-def build_store_subject_query(store_subject_map: dict) -> str:
-    queries = []
-    for store, subjects in store_subject_map.items():
-        subject_query = " OR ".join([f"subject:{s}" for s in subjects])
-        queries.append(f"(from:{store} ({subject_query}))")
-    return " OR ".join(queries)
+def build_store_subject_query(store_keywords: dict) -> str:
+    query_parts = []
+    for store, keywords in store_keywords.items():
+        for keyword in keywords:
+            query_parts.append(f'(from:{store} "{keyword}")')
+    return " OR ".join(query_parts)
 
-def get_matching_message_ids(service, query: str, max_results=50) -> List[str]:
+
+def get_matching_message_ids(service, query: str, max_results=100) -> List[str]:
     results = service.users().messages().list(userId='me', q=query, maxResults=max_results).execute()
     messages = results.get('messages', [])
     return [msg['id'] for msg in messages]
@@ -105,33 +106,41 @@ def main():
         print("❌ Google authentication failed.")
         return
 
-    # Define store-specific subjects
-    store_subject_map = {
+    # Define stores and the keywords to look for in subject or body
+    store_keywords = {
         "amazon.in": ["shipped"],
         "croma.com": ["invoice"],
         "noreply@flipkart.com": ["delivered", "invoice"]
     }
+    
 
-    # Build Gmail query
-    query = build_store_subject_query(store_subject_map)
-
-    # Fetch messages
+    # Gmail query: fetch by sender only
+    query = build_store_subject_query(store_keywords)
     message_ids = get_matching_message_ids(service, query)
-    print(f"🔍 Found {len(message_ids)} matching emails.")
+    print(f"🔍 Gmail returned {len(message_ids)} matching emails.")
 
-    # Extract metadata
     metadata_list = []
     for msg_id in message_ids:
         try:
             metadata = extract_message_metadata(service, msg_id)
-            metadata_list.append(metadata)
+
+            sender = metadata.get("from", "").lower()
+            subject = metadata.get("subject", "").lower()
+            body = metadata.get("body", "").lower()
+
+            for store, keywords in store_keywords.items():
+                if store in sender:
+                    if any(kw in subject or kw in body for kw in keywords):
+                        metadata_list.append(metadata)
+                    break
+
         except Exception as e:
             print(f"⚠️ Error parsing message {msg_id}: {e}")
 
     # Save output
     with open(INPUT_FILE, 'w') as f:
         json.dump(metadata_list, f, indent=2)
-    print(f"✅ Metadata saved to {INPUT_FILE}")
+    print(f"✅ Filtered metadata saved to {INPUT_FILE}")
 
 if __name__ == '__main__':
     main()
