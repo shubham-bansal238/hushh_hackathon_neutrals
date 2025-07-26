@@ -1,5 +1,7 @@
 import os
 import json
+import base64
+import re
 from datetime import datetime
 from typing import List
 from hushh_mcp.consent.token import validate_token
@@ -11,6 +13,8 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 
 SCOPES = ['https://www.googleapis.com/auth/gmail.readonly']
+JSONS_DIR = os.path.join(os.path.dirname(__file__), "../jsons")
+INPUT_FILE = os.path.join(JSONS_DIR, "relevant_emails.json")
 
 def load_consent_token():
     if not os.path.exists(CONSENT_TOKEN_PATH):
@@ -27,10 +31,12 @@ def authenticate_google():
         return
     return build('gmail', 'v1', credentials=creds)
 
-def build_query(stores: List[str], subjects: List[str]) -> str:
-    store_query = " OR ".join([f"from:{s}" for s in stores])
-    subject_query = " OR ".join([f"subject:{s}" for s in subjects])
-    return f"({store_query}) ({subject_query})"
+def build_store_subject_query(store_subject_map: dict) -> str:
+    queries = []
+    for store, subjects in store_subject_map.items():
+        subject_query = " OR ".join([f"subject:{s}" for s in subjects])
+        queries.append(f"(from:{store} ({subject_query}))")
+    return " OR ".join(queries)
 
 def get_matching_message_ids(service, query: str, max_results=50) -> List[str]:
     results = service.users().messages().list(userId='me', q=query, maxResults=max_results).execute()
@@ -38,13 +44,13 @@ def get_matching_message_ids(service, query: str, max_results=50) -> List[str]:
     return [msg['id'] for msg in messages]
 
 def extract_message_metadata(service, msg_id: str):
-    msg = service.users().messages().get(userId='me', id=msg_id, format='metadata').execute()
+    msg = service.users().messages().get(userId='me', id=msg_id, format='full').execute()
     headers = msg['payload']['headers']
     metadata = {
-        'snippet': msg.get('snippet'),
         'id': msg_id,
         'timestamp': int(msg.get('internalDate', '0')) // 1000
     }
+
     for header in headers:
         if header['name'].lower() == 'from':
             metadata['from'] = header['value']
@@ -52,9 +58,35 @@ def extract_message_metadata(service, msg_id: str):
             metadata['subject'] = header['value']
         elif header['name'].lower() == 'date':
             metadata['date'] = header['value']
+
+    def decode_part(data):
+        return base64.urlsafe_b64decode(data).decode('utf-8', errors='ignore')
+
+    def extract_body(payload):
+        if payload.get('mimeType') == 'text/plain' and 'data' in payload.get('body', {}):
+            return decode_part(payload['body']['data']), 'plain'
+        elif payload.get('mimeType') == 'text/html' and 'data' in payload.get('body', {}):
+            return decode_part(payload['body']['data']), 'html'
+        elif 'parts' in payload:
+            for part in payload['parts']:
+                body, kind = extract_body(part)
+                if body:
+                    return body, kind
+        return "", None
+
+    body, kind = extract_body(msg['payload'])
+
+    if kind == 'html':
+        body = re.sub('<[^<]+?>', '', body)
+
+    cleaned_body = re.sub(r'\s+', ' ', body).strip()
+    metadata['body'] = cleaned_body or "[No body found]"
+
     return metadata
 
 def main():
+    os.makedirs(JSONS_DIR, exist_ok=True)
+
     # Verify Consent
     token = load_consent_token()
     if not token:
@@ -69,11 +101,19 @@ def main():
 
     # Authenticate Google
     service = authenticate_google()
+    if not service:
+        print("❌ Google authentication failed.")
+        return
 
-    # Define queries
-    stores = ["nic.in", "iiser"]
-    subjects = ["result", "jee", "main", "b.tech"]
-    query = build_query(stores, subjects)
+    # Define store-specific subjects
+    store_subject_map = {
+        "amazon.in": ["shipped"],
+        "croma.com": ["invoice"],
+        "noreply@flipkart.com": ["delivered", "invoice"]
+    }
+
+    # Build Gmail query
+    query = build_store_subject_query(store_subject_map)
 
     # Fetch messages
     message_ids = get_matching_message_ids(service, query)
@@ -88,10 +128,10 @@ def main():
         except Exception as e:
             print(f"⚠️ Error parsing message {msg_id}: {e}")
 
-    # Save
-    with open('emails_extracted.json', 'w') as f:
+    # Save output
+    with open(INPUT_FILE, 'w') as f:
         json.dump(metadata_list, f, indent=2)
-    print("✅ Metadata saved to emails_extracted.json")
+    print(f"✅ Metadata saved to {INPUT_FILE}")
 
 if __name__ == '__main__':
     main()
