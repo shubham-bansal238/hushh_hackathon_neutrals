@@ -1,0 +1,32 @@
+[
+  {
+    "itemname": "Samsung Galaxy M31 (Space Black, 6GB RAM, 64GB Storage) Sold by STPL Exclusive Online",
+    "price": 14999,
+    "purchase_date": "2020-03-18",
+    "platform": "amazon"
+  },
+  {
+    "itemname": "WHIRLPOOL W/M TL 7KG WM ELITE GREY",
+    "price": 17700,
+    "purchase_date": "2019-12-29",
+    "platform": "croma"
+  },
+  {
+    "itemname": "HP Pavilion x360 Convertible 14-dh1178TU Laptop (10th Gen i3, 4GB, 256GB SSD)",
+    "price": 49990,
+    "purchase_date": "2021-02-10",
+    "platform": "amazon"
+  },
+  {
+    "itemname": "Apple iPhone 11 (64GB) - Black",
+    "price": 64900,
+    "purchase_date": "2020-09-25",
+    "platform": "flipkart"
+  },
+  {
+    "itemname": "OnePlus Bullets Wireless Z Bluetooth Earphones (Black)",
+    "price": 1999,
+    "purchase_date": "2022-06-04",
+    "platform": "amazon"
+  }
+]
