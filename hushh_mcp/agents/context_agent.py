@@ -19,15 +19,15 @@ MODEL = "llama3-70b-8192"
 
 # Paths
 JSONS_DIR = os.path.join(os.path.dirname(__file__), "../jsons")
-INPUT_FILE = os.path.join(JSONS_DIR, "itembyreceipt.json")
-OUTPUT_FILE = os.path.join(JSONS_DIR, "groq_output.json")
+INPUT_FILE = os.path.join(JSONS_DIR, "productdetail.json")
+OUTPUT_FILE = os.path.join(JSONS_DIR, "context.json")
 
 def build_prompt(product):
     return f"""Given this item metadata:
 {{
   "id": {product['id']},
   "price": "{product['price']}",
-  "item": "{product['productname']}",
+  "item": "{product['itemname']}",
   "purchase_date": "{product['purchase_date']}"
 }}
 

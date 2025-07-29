@@ -11,12 +11,12 @@ CORS(app)  # allow Chrome extension to connect
 
 JSONS_DIR = os.path.join(os.path.dirname(__file__), "jsons")
 OUTPUT_FILE = os.path.join(JSONS_DIR, "history.json")
-INPUT_FILE = os.path.join(JSONS_DIR, "groq_output.json")
+INPUT_FILE = os.path.join(JSONS_DIR, "context.json")
 DRIVER_FILE = os.path.join(JSONS_DIR, "driver.json")
 
-@app.route("/groq_output.json", methods=["GET"])
-def get_groq_output():
-    return send_from_directory(JSONS_DIR, "groq_output.json")
+@app.route("/context.json", methods=["GET"])
+def get_context():
+    return send_from_directory(JSONS_DIR, "context.json")
 
 @app.route("/save-history", methods=["POST"])
 def save_history():

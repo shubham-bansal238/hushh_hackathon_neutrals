@@ -1,0 +1,23 @@
+[
+  {
+    "price_range": "350 to 450 INR",
+    "confidence": "medium",
+    "reasoning": "5-month-old, non-branded charger;  fast depreciation of electronics and low demand for non-premium chargers in the Indian market.",
+    "id": 1,
+    "itemname": "Artis AR0506 65Watt Laptop Charger/Adapter with Power Cord Compatible with Lenovo Laptops (20V/3.25A, 65Watt) (USB Pin) (BIS Certified)"
+  },
+  {
+    "price_range": "3000 to 4500 INR",
+    "confidence": "medium",
+    "reasoning": "Mid-range Samsung phone, purchased in 2020, showing significant depreciation considering age and brand in the Indian used market.",
+    "id": 2,
+    "itemname": "Samsung Galaxy M31 (Space Black, 6GB RAM, 64GB Storage) Sold by STPL Exclusive Online"
+  },
+  {
+    "price_range": "3000 to 5000 INR",
+    "confidence": "medium",
+    "reasoning": "Whirlpool is a mid-range brand, and a 5.5 year old washing machine shows significant depreciation, considering the Indian market.",
+    "id": 3,
+    "itemname": "WHIRLPOOL W/M TL 7KG WM ELITE GREY"
+  }
+]

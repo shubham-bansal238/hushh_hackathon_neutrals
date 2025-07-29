@@ -1,5 +1,5 @@
 async function loadProducts() {
-  const response = await fetch(chrome.runtime.getURL("../jsons/groq_output.json"));
+  const response = await fetch(chrome.runtime.getURL("../jsons/context.json"));
   return response.json();
 }
 

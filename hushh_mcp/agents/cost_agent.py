@@ -1,6 +1,5 @@
 import os
 import json
-import uuid
 import re
 from tqdm import tqdm
 from dotenv import load_dotenv
@@ -19,8 +18,8 @@ model = genai.GenerativeModel("gemini-1.5-flash")
 # Paths
 BASE_DIR = os.path.dirname(__file__)
 JSONS_DIR = os.path.join(BASE_DIR, "../jsons")
-INPUT_FILE = os.path.join(JSONS_DIR, "sampledataforcost.json")
-OUTPUT_FILE = os.path.join(JSONS_DIR, "value_of_product.json")
+INPUT_FILE = os.path.join(JSONS_DIR, "productdetail.json")   # <-- use this file
+OUTPUT_FILE = os.path.join(JSONS_DIR, "resale_cost.json")
 
 def build_prompt(product):
     return f"""
@@ -41,8 +40,6 @@ reasoning should be just one liner. and the output you will give me should be ju
 TODAY IS JULY 26, 2025. AND HAVE EMPHASIS ON THE INDIAN MARKET AND THE PURCHASE DATE FOR THE VALUE.  
 ONLY return JSON in this format:  
 {{
-  "id": "{str(uuid.uuid4())[:12]}",
-  "itemname": "{product['itemname']}",
   "price_range": "X to Y INR",
   "confidence": "high|medium|low",
   "reasoning": "one-line explanation"
@@ -52,7 +49,7 @@ Input product:
 {json.dumps(product, indent=2)}  
 Overpricing leads to incorrect appraisals. Prioritize underpricing to avoid user dissatisfaction  
 Pricing above this leads to unsold listings and user loss. Therefore, I choose the lowest safe bracket.  
-less premium brand devices depreciate faster than premium ones. (specially in phone,headphone category)
+less premium brand devices depreciate faster than premium ones. (specially in phone, headphone category)
 """
 
 def extract_json(text):
@@ -76,6 +73,7 @@ def call_gemini(prompt):
         return None
 
 def main():
+    # Load products WITH their IDs from productdetail.json
     with open(INPUT_FILE, "r", encoding="utf-8") as f:
         products = json.load(f)
 
@@ -89,14 +87,17 @@ def main():
         response_text = call_gemini(prompt)
 
         if not response_text:
-            print(f"⚠️ No response for: {product['itemname']}")
+            print(f"⚠️ No response for: {product.get('itemname')}")
             continue
 
         parsed = extract_json(response_text)
         if parsed:
+            # Attach original ID + itemname back into Gemini's response
+            parsed["id"] = product.get("id")
+            parsed["itemname"] = product.get("itemname")
             output.append(parsed)
         else:
-            print(f"❌ Failed to parse JSON for: {product['itemname']}")
+            print(f"❌ Failed to parse JSON for: {product.get('itemname')}")
             print("Raw response:", response_text)
 
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:

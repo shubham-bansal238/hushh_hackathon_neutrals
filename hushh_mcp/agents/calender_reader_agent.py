@@ -10,8 +10,8 @@ from googleapiclient.discovery import build
 
 SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
 JSONS_DIR = os.path.join(os.path.dirname(__file__), "../jsons")
-PRODUCTINFO_PATH = os.path.join(JSONS_DIR, "productinfo.json")
-OUTPUT_PATH = os.path.join(JSONS_DIR, "calendar_keywords_last_seen.json")
+PRODUCTINFO_PATH = os.path.join(JSONS_DIR, "context.json")
+OUTPUT_PATH = os.path.join(JSONS_DIR, "calendar_lastseen.json")
 
 
 def load_consent_token():
