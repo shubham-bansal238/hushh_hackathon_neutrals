@@ -1,6 +1,10 @@
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
-import os, json
+import os, json, threading, datetime, time
+
+# Windows-specific imports
+import pythoncom
+import wmi
 
 app = Flask(__name__)
 CORS(app)  # allow Chrome extension to connect
@@ -8,6 +12,7 @@ CORS(app)  # allow Chrome extension to connect
 JSONS_DIR = os.path.join(os.path.dirname(__file__), "jsons")
 OUTPUT_FILE = os.path.join(JSONS_DIR, "history.json")
 INPUT_FILE = os.path.join(JSONS_DIR, "groq_output.json")
+DRIVER_FILE = os.path.join(JSONS_DIR, "driver.json")
 
 @app.route("/groq_output.json", methods=["GET"])
 def get_groq_output():
@@ -39,6 +44,46 @@ def save_history():
         json.dump(history, f, indent=2, ensure_ascii=False)
 
     return jsonify({"status": "ok", "saved_to": OUTPUT_FILE})
+
+# === Driver Monitor ===
+def driver_monitor():
+    pythoncom.CoInitialize()
+    c = wmi.WMI()
+
+    os.makedirs(JSONS_DIR, exist_ok=True)
+
+    # Load existing driver log
+    if os.path.exists(DRIVER_FILE):
+        with open(DRIVER_FILE, "r", encoding="utf-8") as f:
+            driver_log = json.load(f)
+    else:
+        driver_log = {}
+
+    watcher = c.watch_for(
+        notification_type="Creation",
+        wmi_class="Win32_PnPEntity"
+    )
+
+    print("📡 Driver monitor started (Windows only)")
+
+    while True:
+        try:
+            device = watcher()
+            name = device.Name or "Unknown Device"
+            now = datetime.datetime.now().strftime("%d/%m/%Y")
+
+            driver_log[name] = now
+
+            with open(DRIVER_FILE, "w", encoding="utf-8") as f:
+                json.dump(driver_log, f, indent=2, ensure_ascii=False)
+
+            print(f"✅ Driver activated: {name} on {now}")
+        except Exception as e:
+            print("❌ Driver watcher error:", e)
+            time.sleep(5)
+
+# Start driver monitoring in background
+threading.Thread(target=driver_monitor, daemon=True).start()
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=5000, debug=True)
