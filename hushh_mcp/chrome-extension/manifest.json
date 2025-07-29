@@ -1,0 +1,17 @@
+{
+  "name": "Product History Filter",
+  "description": "Match browser history titles with product keywords and save results.",
+  "version": "1.1",
+  "manifest_version": 3,
+  "permissions": [
+    "tabs",
+    "storage"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Product Monitor"
+  }
+}
