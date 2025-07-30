@@ -1,0 +1,46 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "itemname": "Artis AR0506 65Watt Laptop Charger/Adapter with Power Cord Compatible with Lenovo Laptops (20V/3.25A, 65Watt) (USB Pin) (BIS Certified)",
+      "purchase_price": 699,
+      "purchase_date": "2025-02-18",
+      "price_range": "350 to 450 INR",
+      "confidence": "medium",
+      "chrome_browsing_matched_url_history": null,
+      "calender_last_matched": null,
+      "status": "uncertain"
+    },
+    {
+      "id": 2,
+      "itemname": "Samsung Galaxy M31 (Space Black, 6GB RAM, 64GB Storage) Sold by STPL Exclusive Online",
+      "purchase_price": 14999,
+      "purchase_date": "2020-03-18",
+      "price_range": "3000 to 4500 INR",
+      "confidence": "medium",
+      "chrome_browsing_matched_url_history": [
+        "Samsung M31 - Google Search",
+        "listen - Google Search"
+      ],
+      "calender_last_matched": null,
+      "status": "resell_candidate"
+    },
+    {
+      "id": 3,
+      "itemname": "WHIRLPOOL W/M TL 7KG WM ELITE GREY",
+      "purchase_price": 17700,
+      "purchase_date": "2019-12-29",
+      "price_range": "3000 to 5000 INR",
+      "confidence": "medium",
+      "chrome_browsing_matched_url_history": [
+        "Whirlpool WM 7KG Grey needs fixing - Google Search"
+      ],
+      "calender_last_matched": null,
+      "status": "resell_candidate"
+    }
+  ],
+  "driver_history_from_pc": {
+    "Headset (JBL TUNE510BT Hands-Free AG Audio)": "29/07/2025",
+    "Headphones (JBL TUNE510BT Stereo)": "29/07/2025"
+  }
+}
