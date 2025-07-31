@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* Dark theme design system inspired by modern login interfaces */
+    --background: 220 13% 9%;
+    --foreground: 220 9% 95%;
+
+    --card: 220 13% 11%;
+    --card-foreground: 220 9% 95%;
+
+    --popover: 220 13% 11%;
+    --popover-foreground: 220 9% 95%;
+
+    --primary: 214 100% 70%;
+    --primary-foreground: 220 13% 9%;
+
+    --secondary: 220 13% 15%;
+    --secondary-foreground: 220 9% 95%;
+
+    --muted: 220 13% 15%;
+    --muted-foreground: 220 9% 65%;
+
+    --accent: 220 13% 18%;
+    --accent-foreground: 220 9% 95%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 220 9% 95%;
+
+    --border: 220 13% 18%;
+    --input: 220 13% 15%;
+    --ring: 214 100% 70%;
+
+    --radius: 0.75rem;
+
+    /* Gradient backgrounds */
+    --gradient-primary: linear-gradient(135deg, hsl(214 100% 70%), hsl(250 100% 75%));
+    --gradient-background: radial-gradient(ellipse at center, hsl(220 13% 12%) 0%, hsl(220 13% 9%) 100%);
+    --gradient-card: linear-gradient(135deg, hsl(220 13% 11%) 0%, hsl(220 13% 13%) 100%);
+    --gradient-subtle: linear-gradient(180deg, hsl(220 13% 9%) 0%, hsl(220 13% 11%) 100%);
+    
+    /* Sidebar colors for application */
+    --sidebar-background: 220 13% 11%;
+    --sidebar-foreground: 220 9% 80%;
+    --sidebar-primary: 214 100% 70%;
+    --sidebar-primary-foreground: 220 13% 9%;
+    --sidebar-accent: 220 13% 15%;
+    --sidebar-accent-foreground: 220 9% 95%;
+    --sidebar-border: 220 13% 18%;
+    --sidebar-ring: 214 100% 70%;
+
+    /* Shadows with primary color glow */
+    --shadow-glow: 0 0 40px hsl(214 100% 70% / 0.3);
+    --shadow-card: 0 4px 20px hsl(220 13% 5% / 0.5);
+    --shadow-elegant: 0 10px 40px -10px hsl(220 13% 5% / 0.8);
+
+    /* Animation variables */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
