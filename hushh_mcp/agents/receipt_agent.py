@@ -1,6 +1,8 @@
 import os
 import json
+from hushh_mcp.vault.json_vault import load_encrypted_json, save_encrypted_json
 import re
+import json
 from datetime import datetime
 from bs4 import BeautifulSoup
 import google.generativeai as genai
@@ -194,8 +196,7 @@ def parse_email(email):
         return []
 
 def main():
-    with open(INPUT_PATH, "r", encoding="utf-8") as f:
-        emails = json.load(f)
+    emails = load_encrypted_json(INPUT_PATH)
 
     all_products = []
     for email in emails:
@@ -261,8 +262,7 @@ Here is the purchase data:
         final_with_ids.append(ordered_prod)
 
     # Save final result
-    with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
-        json.dump(final_with_ids, f, indent=2, ensure_ascii=False)
+    save_encrypted_json(final_with_ids, OUTPUT_PATH)
 
 if __name__ == "__main__":
     main()

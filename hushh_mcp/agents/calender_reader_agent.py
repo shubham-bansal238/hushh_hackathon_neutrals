@@ -1,5 +1,6 @@
 import os
 import json
+from hushh_mcp.vault.json_vault import load_encrypted_json, save_encrypted_json
 from datetime import datetime, timedelta, timezone
 from typing import List, Dict
 from hushh_mcp.consent.token import validate_token
@@ -28,8 +29,7 @@ def authenticate_google():
     return build("calendar", "v3", credentials=creds)
 
 def load_keywords(path=PRODUCTINFO_PATH) -> List[Dict]:
-    with open(path, "r") as f:
-        return json.load(f)
+    return load_encrypted_json(path)
 
 def fetch_calendar_events(service):
     start_time = (datetime.now(timezone.utc) - timedelta(days=90)).isoformat()
@@ -85,8 +85,7 @@ def analyze_events(events: List[dict], keywords: List[Dict]):
 
 def save_result(data, path=OUTPUT_PATH):
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    with open(path, "w") as f:
-        json.dump(data, f, indent=2)
+    save_encrypted_json(data, path)
 
 def main():
     # Consent verification

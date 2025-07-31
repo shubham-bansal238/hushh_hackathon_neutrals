@@ -1,5 +1,6 @@
 import os
 import json
+from hushh_mcp.vault.json_vault import save_encrypted_json
 import base64
 import re
 from datetime import datetime
@@ -138,9 +139,8 @@ def main():
             print(f"⚠️ Error parsing message {msg_id}: {e}")
 
     # Save output
-    with open(INPUT_FILE, 'w') as f:
-        json.dump(metadata_list, f, indent=2)
-    print(f"✅ Filtered metadata saved to {INPUT_FILE}")
+    save_encrypted_json(metadata_list, INPUT_FILE)
+    print(f"✅ Filtered metadata saved to {INPUT_FILE} (encrypted)")
 
 if __name__ == '__main__':
     main()

@@ -1,6 +1,8 @@
 import os
 import json
+from hushh_mcp.vault.json_vault import load_encrypted_json, save_encrypted_json
 import re
+import json
 from tqdm import tqdm
 from dotenv import load_dotenv
 import google.generativeai as genai
@@ -73,9 +75,8 @@ def call_gemini(prompt):
         return None
 
 def main():
-    # Load products WITH their IDs from productdetail.json
-    with open(INPUT_FILE, "r", encoding="utf-8") as f:
-        products = json.load(f)
+    # Load products WITH their IDs from productdetail.json (encrypted)
+    products = load_encrypted_json(INPUT_FILE)
 
     if isinstance(products, dict):
         products = [products]
@@ -100,8 +101,7 @@ def main():
             print(f"❌ Failed to parse JSON for: {product.get('itemname')}")
             print("Raw response:", response_text)
 
-    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-        json.dump(output, f, indent=2, ensure_ascii=False)
+    save_encrypted_json(output, OUTPUT_FILE)
 
     print(f"\n✅ Finished. {len(output)} valuations written to {OUTPUT_FILE}")
 

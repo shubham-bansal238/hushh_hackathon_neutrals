@@ -1,23 +1,7 @@
-[
-  {
-    "id": 1,
-    "itemname": "Artis AR0506 65Watt Laptop Charger/Adapter with Power Cord Compatible with Lenovo Laptops (20V/3.25A, 65Watt) (USB Pin) (BIS Certified)",
-    "price": 699,
-    "purchase_date": "2025-02-18",
-    "platform": "amazon"
-  },
-  {
-    "id": 2,
-    "itemname": "Samsung Galaxy M31 (Space Black, 6GB RAM, 64GB Storage) Sold by STPL Exclusive Online",
-    "price": 14999,
-    "purchase_date": "2020-03-18",
-    "platform": "amazon"
-  },
-  {
-    "id": 3,
-    "itemname": "WHIRLPOOL W/M TL 7KG WM ELITE GREY",
-    "price": 17700,
-    "purchase_date": "2019-12-29",
-    "platform": "croma"
-  }
-]
+{
+  "ciphertext": "TJo/XzHY/1SQZZlMh9p8Z7pzLSzD8sfFvto0suQh4XhbjQ4iYvz6fLqj0Kv8sE2+KvV90vE/VGrpVjRxALv88ITWYONAN3NL99nwh/35soD/WWW7PdMJ8GcCsw4fcN6DA8W4A8lqukRxJkgtRT1f+llrHoM4127Az5m/hU5WJSISJac8r4awIb9AoP1t+j0LsHdKNTHco5zdncetHw8/Rv6IBn3wOKayhjN/+60QFM94OkGc4JxYGhrayf1gLT6X9fssQpO5p/g6v3tJOkwofw/E0jRZpz4yqd1lkuzv+18Vc8vwQumEhgRJBx5I4rsXf3mYh1O7lnCCdkc5J2clzVDq1EsgJBPyPbDahedV6nph1m3CEVQKZefm3+XHBJNQx3iAViO38QDy095K39KVONFtEALL5UtbfVgWK/adRGWFLDIRYwbakBKL7rdZ1hMtX1f75WF25UZw4OzpwUjUeKzFc/JYavKWO/jFNUEOa8VRZP1Il/gYY+RGhUtru2KYtQtgnZC9W3qoKM8K80snzpTPwyPNBR29BWgPURcnLb1NJkTv+e0TLwiZ3QYlAMB1vsPTZ44iEEIMdm4rfhXKy+g9yYvcnux9vxbLg9vJ0G27vtYxU1KvLzbrIIgC0+Xtlus8TN5HiFSDaE3CnrdJztvIZeNbIVL6I4T3xpEKbaP75jmQsR7hLkhWHq6Zl6WfJdI2D/rBN5unNNF6sJl67F3uPY5q+JwL+Bc+IpuhflBh2icQ5KoPbYYXeLQYOEwPH6+Yxp9wlkU/jTMhYGmWWNcIgYFPnehlXArUtswNL/kOkESYhFtVmoUien+R3V85ELpir5WqTUfkNQMfrN4DAIEIrPY3VYEvFc4fJr1jTgYywssRqXMKv0abf1+kSsVSbxuTtsdUqYqPI7KOrOz1kdFk7Y0fwn7ezflheGEPSwN3psjLyoAd2GUK6KCLGODBT1n12HIjH5ALuCGFBudsAWy9HUQqSAHR0CgoNfGifASF+ywZKSnRuJu9ljMTQ273KtfFPB6BHOj/QrXkkGXOIVJsLROpaCZJ+7LKvn15itxcxQ==",
+  "iv": "GJRCT7GdrV3glF6J",
+  "tag": "IuJIMk20PwmVgRQXky6HSg==",
+  "encoding": "base64",
+  "algorithm": "aes-256-gcm"
+}

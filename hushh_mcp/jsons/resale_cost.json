@@ -1,23 +1,7 @@
-[
-  {
-    "price_range": "350 to 450 INR",
-    "confidence": "medium",
-    "reasoning": "5-month-old, non-branded charger;  fast depreciation of electronics and low demand for non-premium chargers in the Indian market.",
-    "id": 1,
-    "itemname": "Artis AR0506 65Watt Laptop Charger/Adapter with Power Cord Compatible with Lenovo Laptops (20V/3.25A, 65Watt) (USB Pin) (BIS Certified)"
-  },
-  {
-    "price_range": "3000 to 4500 INR",
-    "confidence": "medium",
-    "reasoning": "Mid-range Samsung phone, purchased in 2020, showing significant depreciation considering age and brand in the Indian used market.",
-    "id": 2,
-    "itemname": "Samsung Galaxy M31 (Space Black, 6GB RAM, 64GB Storage) Sold by STPL Exclusive Online"
-  },
-  {
-    "price_range": "3000 to 5000 INR",
-    "confidence": "medium",
-    "reasoning": "Whirlpool is a mid-range brand, and a 5.5 year old washing machine shows significant depreciation, considering the Indian market.",
-    "id": 3,
-    "itemname": "WHIRLPOOL W/M TL 7KG WM ELITE GREY"
-  }
-]
+{
+  "ciphertext": "GzRyfV2SXsHScI0njvZyqaUbR3pwzopPFAN7rEqwABGwB7iOvEdHRMf/ZLo5jZvXEwetkoe+98Jcf0uFewfMpGIzKBbR6AEMm8IKn8JhleQAiU5fXTi2n967YrDfV+DiFNshTb1//w2AzYxJOaiQRhVCIyM3JhgcKjeCmwgVk7OWdwfaYTcJ2kCd9xiW0PxCeaqlkRrDvkHyjl6uNcd2sekxnpqSbcIlNREPbBtBtlh2D0SdJyO2DCqE5ibDihZQshAciLH/HDnAYHqjRWXCDw4e+1HbX/X8a3w/AII+PmFr6vD0/EzmTtKnrIbcOdmpAMAccSOfZ88LwLVdjgDBrS819tGHndqt1nDiDDLOtWMWTQ9maXygzVDirFaHpCZUv9ve0oUIdTpg73ughUdxMUUFPVzjjugLwx3dUBYG/8WhwwJmUiNf9OrNuN3aNFSFKx+hRc1zm2yUBBpoModxtZEJF6BMYC9lRH0hX6977iod65CyjwPH1IQN6krnnCRFBzBbHj4mIX54FvEbWr213Rkv17KbOQlVZ+wNBdcFUHMIyKoLUe7/mH7vpRE//N0FT4w/AAhYLqbH+i6vqGKZaKsrPxSxgAdnQrXqYstSLsOJTipwgekWO8O07YYy/CJD4wpHO3DFb7iQP7UmR16jjncJRXPyO/NlHiBO5A+TWlbSlyFUmmtNL9kr08qc3kjWmJiWU/m6j2ueGwKpp3zr7ogQN6x9Nf9Uj78ife37xxkK4ah3i0kDOgCJ9wpZmOwgA+bflZE52ByQDwmmo0zsjWXBFnjmj2KDjj0ooYqDCtZA3bdlL7bb9LphMFIOsQuxNN4tCTpe/YqFi16z9qMgQOjmQcZFWU+64VNob2n2tOXgbD9KcSsgZhus/2Nrr00fJOBif7ROSzp3R5qCeU3ZLdusqTl+f8vj0ywJCLldw8O4wEZEjz85hFhLK3ggg6rUXe3a4Mz6l68eaXNj8lHZVwdLOzsZjvflkwK/jr8Wu5IvoyePYWoQnFoIdjWpdG+Jj+fu7ozJD4aiNDw2ElK4SE322h+6pE2c8g0+69tYbDi6fBJLvEmjRL3VrjK6/mqtfApVysolBaYPfK4gzlEpNJUdw2t1M7byE/QruNKVmKQE6RgmDVfXdH285eyIfpJr3QWjcP+exhMudO6WmqUC4rdVlzaeExuZIG6OE3zNPD/pjwbP4riIUgr2+KfayPPH0/zaKIfSL4DaZGPnS+B8CpgkyManTuQsM2vldqGu6tFdYCPXrauz5tM4obNURjqw5gFpWzfV0xGxJIx7RVz7f7wNEcA/TT212hhvOjVOLJQOyOXFxk+s3LT3Q2AbrXIqxXk6qoi3ctWs1mM/QhmFWLrlvBBQIzf4YnhgZpiIkCPFJBQiGT7VOX40CMs1EwbDFD0FIgdDy0ojuD5dfp9T/8sSPtiR6mERO8WZ2wxzVQl7o0eJIlgm/ff6CDU9T0RGu/lH8VZko99LzAaQ91geIhFVAc3lm/wYL5xdnl5TTgGf++OKULGhtWLgRWsci5VuWRH9fTKuR9p9GHU04kWnr4MSLoZ89fmG0x6Lt/NollECZtFrcK2LHYck5oSrctsTQQJzTUiaegl1mi/d1ELLKE0sTt3B4pkCL0JLsVUXvaINVGgTpaup89lk6ey1ObkN+znMlFA/KYhVGoGlSx39NycrJAmLqkPF1IStbBM1OpmZCWtxpFCyqGjcZ6yaGmfRkRtDkR5bMcrCxh9MjTKKEWyJGAv9ixpN0629SYQWvJOpE7aJG8dll9tTA99eWdzi98QxVFao9vWH2aOVyUyTrG4EATF9EieawymHZVvLDYjmc+bnDLvc",
+  "iv": "GyeTlKhnk2NqtcWu",
+  "tag": "NQta8Imq3kOZa7qm+7uDSg==",
+  "encoding": "base64",
+  "algorithm": "aes-256-gcm"
+}

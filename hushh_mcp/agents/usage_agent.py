@@ -1,5 +1,6 @@
 import os
 import json
+from hushh_mcp.vault.json_vault import load_encrypted_json, save_encrypted_json
 import re
 from tqdm import tqdm
 from dotenv import load_dotenv
@@ -73,9 +74,8 @@ def call_gemini(prompt):
         return None
 
 def main():
-    # Load master.json
-    with open(INPUT_FILE, "r", encoding="utf-8") as f:
-        master_data = json.load(f)
+    # Load master.json (encrypted)
+    master_data = load_encrypted_json(INPUT_FILE)
 
     products = master_data.get("products", [])
     driver_history = master_data.get("driver_history_from_pc", {})
@@ -108,8 +108,7 @@ def main():
         "driver_history_from_pc": driver_history
     }
 
-    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-        json.dump(final_output, f, indent=2, ensure_ascii=False)
+    save_encrypted_json(final_output, OUTPUT_FILE)
 
     print(f"\n✅ Finished. Results written to {OUTPUT_FILE}")
 

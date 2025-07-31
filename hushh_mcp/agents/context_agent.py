@@ -1,5 +1,7 @@
 import os
 import json
+import json
+from hushh_mcp.vault.json_vault import load_encrypted_json, save_encrypted_json
 import time
 from dotenv import load_dotenv
 from tqdm import tqdm
@@ -49,8 +51,7 @@ def call_groq(prompt):
     )
 
 def main():
-    with open(INPUT_FILE, "r", encoding="utf‑8") as f:
-        items = json.load(f)
+    items = load_encrypted_json(INPUT_FILE)
 
     output = []
     for product in tqdm(items, desc="Processing items"):
@@ -67,8 +68,7 @@ def main():
             print(raw)
             continue
 
-    with open(OUTPUT_FILE, "w", encoding="utf‑8") as f:
-        json.dump(output, f, indent=2, ensure_ascii=False)
+    save_encrypted_json(output, OUTPUT_FILE)
 
     print(f"\n✅ Output written to {OUTPUT_FILE}")
 
