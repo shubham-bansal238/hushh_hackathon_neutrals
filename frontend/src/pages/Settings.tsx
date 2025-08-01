@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
@@ -10,6 +10,22 @@ import { useNavigate } from "react-router-dom";
 
 const Settings = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetch("http://localhost:5000/auth/user", { credentials: "include" })
+      .then(res => {
+        if (!res.ok) {
+          navigate("/");
+          return;
+        }
+        return res.json();
+      })
+      .then(data => {
+        if (!data || !data.email) {
+          navigate("/");
+        }
+      });
+  }, [navigate]);
   const [permissions, setPermissions] = useState({
     browserHistory: true,
     calendarAccess: false,

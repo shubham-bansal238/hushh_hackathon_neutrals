@@ -19,6 +19,22 @@ interface Product {
 
 const ReSale = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetch("http://localhost:5000/auth/user", { credentials: "include" })
+      .then(res => {
+        if (!res.ok) {
+          navigate("/");
+          return;
+        }
+        return res.json();
+      })
+      .then(data => {
+        if (!data || !data.email) {
+          navigate("/");
+        }
+      });
+  }, [navigate]);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 

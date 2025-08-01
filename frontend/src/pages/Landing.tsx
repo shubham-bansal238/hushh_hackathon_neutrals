@@ -1,12 +1,34 @@
+import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { Chrome } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+
 
 const Landing = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
 
-  const handleGetStarted = () => {
-    navigate("/application");
+  // Check authentication on mount
+  useEffect(() => {
+    fetch("http://localhost:5000/auth/user", { credentials: "include" })
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.email) {
+          navigate("/application");
+        }
+      });
+    // Check for success param in URL
+    if (window.location.search.includes("success=true")) {
+      toast({ title: "Login Successful!", description: "You are now authenticated.", variant: "default" });
+      // Remove param from URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, [navigate, toast]);
+
+  // Redirect to Flask backend for Google OAuth
+  const handleGoogleLogin = () => {
+    window.location.href = "http://localhost:5000/auth/google";
   };
 
   return (
@@ -37,7 +59,7 @@ const Landing = () => {
           <div className="space-y-4">
             {/* Primary CTA Button */}
             <Button 
-              onClick={handleGetStarted}
+              onClick={handleGoogleLogin}
               size="lg" 
               className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium h-12 rounded-xl shadow-glow transition-all duration-300 hover:shadow-lg hover:scale-[1.02]"
             >

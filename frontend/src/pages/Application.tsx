@@ -23,6 +23,23 @@ const Application = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Authentication check on mount
+  useEffect(() => {
+    fetch("http://localhost:5000/auth/user", { credentials: "include" })
+      .then(res => {
+        if (!res.ok) {
+          navigate("/");
+          return;
+        }
+        return res.json();
+      })
+      .then(data => {
+        if (!data || !data.email) {
+          navigate("/");
+        }
+      });
+  }, [navigate]);
+
   // Fetch products from backend file
   useEffect(() => {
     fetchProducts()
@@ -136,6 +153,13 @@ const Application = () => {
               <div className="hidden sm:block text-sm text-muted-foreground">
                 {products.length} items detected
               </div>
+              <Button onClick={async () => {
+                await fetch("http://localhost:5000/auth/logout", {
+                  method: "POST",
+                  credentials: "include"
+                });
+                navigate("/");
+              }}>Logout</Button>
               <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
                 <User className="w-4 h-4 text-primary-foreground" />
               </div>

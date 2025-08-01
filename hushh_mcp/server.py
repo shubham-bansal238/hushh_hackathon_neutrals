@@ -1,14 +1,31 @@
-from flask import Flask, request, jsonify, send_from_directory, Response
+
+from flask import Flask, request, jsonify, send_from_directory, Response, redirect, session, url_for
 from flask_cors import CORS
 import os, json, threading, datetime, time
-from hushh_mcp.vault.json_vault import load_encrypted_json
-from hushh_mcp.vault.json_vault import save_encrypted_json, load_encrypted_json
-
-from flask import request
+from hushh_mcp.vault.json_vault import load_encrypted_json, save_encrypted_json
 import pythoncom
 import wmi
+from google_auth_oauthlib.flow import Flow
+from google.oauth2 import id_token
+from google.auth.transport import requests as google_requests
+
 app = Flask(__name__)
-CORS(app)
+CORS(app, supports_credentials=True)
+app.config['SECRET_KEY'] = os.environ.get('FLASK_SECRET_KEY', 'supersecretkey')
+
+GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID')
+GOOGLE_CLIENT_SECRET = os.environ.get('GOOGLE_CLIENT_SECRET')
+GOOGLE_DISCOVERY_URL = "https://accounts.google.com/.well-known/openid-configuration"
+GOOGLE_REDIRECT_URI = os.environ.get('GOOGLE_REDIRECT_URI', 'http://localhost:5000/auth/google/callback')
+
+SCOPES = [
+    "https://www.googleapis.com/auth/gmail.readonly",
+    "https://www.googleapis.com/auth/calendar.readonly",
+    "https://www.googleapis.com/auth/userinfo.email",
+    "https://www.googleapis.com/auth/userinfo.profile",
+    "openid"
+]
+
 # Products API endpoints
 @app.route("/products", methods=["GET"])
 def get_products():
@@ -17,6 +34,60 @@ def get_products():
         return jsonify(data)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+# Logout endpoint
+@app.route('/auth/logout', methods=['POST'])
+def logout():
+    session.clear()
+    return jsonify({'success': True})
+
+
+@app.route('/auth/google')
+def auth_google():
+    flow = Flow.from_client_secrets_file(
+        'hushh_mcp/credentials.json',
+        scopes=SCOPES,
+        redirect_uri=GOOGLE_REDIRECT_URI
+    )
+    authorization_url, state = flow.authorization_url(
+        access_type='offline',
+        include_granted_scopes='true'
+    )
+    session['state'] = state
+    return redirect(authorization_url)
+
+@app.route('/auth/google/callback')
+def auth_google_callback():
+    state = session.get('state')
+    flow = Flow.from_client_secrets_file(
+        'hushh_mcp/credentials.json',
+        scopes=SCOPES,
+        redirect_uri=GOOGLE_REDIRECT_URI,
+        state=state
+    )
+    flow.fetch_token(authorization_response=request.url)
+    credentials = flow.credentials
+    request_session = google_requests.Request()
+    id_info = id_token.verify_oauth2_token(
+        credentials._id_token,
+        request_session,
+        GOOGLE_CLIENT_ID
+    )
+    # Store user info in session
+    session['user'] = {
+        'email': id_info.get('email'),
+        'name': id_info.get('name'),
+        'picture': id_info.get('picture')
+    }
+    # Redirect to frontend (adjust URL as needed)
+    return redirect('http://localhost:8080/')
+
+@app.route('/auth/user')
+def get_authenticated_user():
+    user = session.get('user')
+    if user:
+        return jsonify(user)
+    return jsonify({'error': 'Not authenticated'}), 401
 
 @app.route("/products/update-status", methods=["POST"])
 def update_product_status():
