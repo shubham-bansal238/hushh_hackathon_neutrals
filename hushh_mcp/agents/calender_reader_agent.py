@@ -48,7 +48,7 @@ def fetch_calendar_events(service):
 
 def match_event(event: dict, keyword: Dict) -> bool:
     text = ((event.get("summary") or "") + " " + (event.get("description") or "")).lower()
-    
+
     for context_word in keyword.get("context_keywords", []):
         if context_word.lower() in text:
             return True
@@ -61,7 +61,6 @@ def match_event(event: dict, keyword: Dict) -> bool:
 
 def analyze_events(events: List[dict], keywords: List[Dict]):
     last_seen = {entry["id"]: None for entry in keywords}
-
     for event in events:
         date_str = event.get("start", {}).get("dateTime") or event.get("start", {}).get("date")
         if not date_str:
