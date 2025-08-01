@@ -33,16 +33,70 @@ const Settings = () => {
     notifications: true,
     analytics: false,
     locationAccess: false,
-    emailTracking: true,
+    emailTracking: false,
     deviceInfo: false,
     thirdPartySharing: false,
   });
 
-  const handlePermissionChange = (permission: string, value: boolean) => {
+  // Fetch consent status on mount
+  useEffect(() => {
+    fetch("http://localhost:5000/consent/status", { credentials: "include" })
+      .then(res => res.json())
+      .then(data => {
+        setPermissions(prev => ({
+          ...prev,
+          emailTracking: !!data.gmail,
+          calendarAccess: !!data.calendar
+        }));
+      });
+  }, []);
+
+  // Handle toggle for consent protocol
+  const handlePermissionChange = async (permission: string, value: boolean) => {
     setPermissions(prev => ({
       ...prev,
       [permission]: value
     }));
+
+    // Only handle consent for emailTracking and calendarAccess
+    if (permission === 'emailTracking') {
+      if (value) {
+        // Generate Gmail token
+        await fetch("http://localhost:5000/consent/generate-token", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ type: "gmail" })
+        });
+      } else {
+        // Revoke Gmail token
+        await fetch("http://localhost:5000/consent/revoke-token", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ type: "gmail" })
+        });
+      }
+    }
+    if (permission === 'calendarAccess') {
+      if (value) {
+        // Generate Calendar token
+        await fetch("http://localhost:5000/consent/generate-token", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ type: "calendar" })
+        });
+      } else {
+        // Revoke Calendar token
+        await fetch("http://localhost:5000/consent/revoke-token", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ type: "calendar" })
+        });
+      }
+    }
   };
 
   return (

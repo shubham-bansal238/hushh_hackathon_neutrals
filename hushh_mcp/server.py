@@ -1,4 +1,7 @@
-
+from flask import request, jsonify
+from hushh_mcp.cli.authenticate_user import grant_consent_flow, revoke_consent, ConsentScope, CONSENT_TOKEN_PATH, DEFAULT_CONSENT_TOKEN_EXPIRY_MS, issue_token
+import json
+import os
 from flask import Flask, request, jsonify, send_from_directory, Response, redirect, session, url_for
 from flask_cors import CORS
 import os, json, threading, datetime, time
@@ -12,6 +15,67 @@ from google.auth.transport import requests as google_requests
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
 app.config['SECRET_KEY'] = os.environ.get('FLASK_SECRET_KEY', 'supersecretkey')
+
+
+# Consent status endpoint
+@app.route('/consent/status', methods=['GET'])
+def consent_status():
+    if not os.path.exists(CONSENT_TOKEN_PATH):
+        return jsonify({"gmail": False, "calendar": False})
+    with open(CONSENT_TOKEN_PATH) as f:
+        data = json.load(f)
+    return jsonify({
+        "gmail": str(ConsentScope.FETCH_EMAIL) in data,
+        "calendar": str(ConsentScope.FETCH_CALENDAR) in data
+    })
+
+# Generate consent token endpoint
+@app.route('/consent/generate-token', methods=['POST'])
+def generate_consent_token():
+    req = request.get_json()
+    token_type = req.get('type')
+    if token_type not in ['gmail', 'calendar']:
+        return jsonify({"error": "Invalid type"}), 400
+    # For demo, use a fixed user_id; in production, get from session
+    user_id = 'demo_user'  # Replace with session user
+    if token_type == 'gmail':
+        token = issue_token(user_id=user_id, agent_id="gmail_reader_agent", scope=ConsentScope.FETCH_EMAIL, expires_in_ms=DEFAULT_CONSENT_TOKEN_EXPIRY_MS)
+        # Save token
+        if os.path.exists(CONSENT_TOKEN_PATH):
+            with open(CONSENT_TOKEN_PATH) as f:
+                existing = json.load(f)
+        else:
+            existing = {}
+        existing[str(ConsentScope.FETCH_EMAIL)] = token.dict()
+        with open(CONSENT_TOKEN_PATH, "w") as f:
+            json.dump(existing, f, indent=2)
+        return jsonify({"success": True})
+    elif token_type == 'calendar':
+        token = issue_token(user_id=user_id, agent_id="calendar_reader_agent", scope=ConsentScope.FETCH_CALENDAR, expires_in_ms=DEFAULT_CONSENT_TOKEN_EXPIRY_MS)
+        if os.path.exists(CONSENT_TOKEN_PATH):
+            with open(CONSENT_TOKEN_PATH) as f:
+                existing = json.load(f)
+        else:
+            existing = {}
+        existing[str(ConsentScope.FETCH_CALENDAR)] = token.dict()
+        with open(CONSENT_TOKEN_PATH, "w") as f:
+            json.dump(existing, f, indent=2)
+        return jsonify({"success": True})
+
+# Revoke consent token endpoint
+@app.route('/consent/revoke-token', methods=['POST'])
+def revoke_consent_token():
+    req = request.get_json()
+    token_type = req.get('type')
+    if token_type not in ['gmail', 'calendar']:
+        return jsonify({"error": "Invalid type"}), 400
+    if token_type == 'gmail':
+        revoke_consent(ConsentScope.FETCH_EMAIL)
+        return jsonify({"success": True})
+    elif token_type == 'calendar':
+        revoke_consent(ConsentScope.FETCH_CALENDAR)
+        return jsonify({"success": True})
+
 
 GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID')
 GOOGLE_CLIENT_SECRET = os.environ.get('GOOGLE_CLIENT_SECRET')
