@@ -27,7 +27,7 @@ def build_prompt(product, driver_history):
 You are a Product Usage and Resale Candidate Detection Agent.
 
 For the given product, decide if its current status is one of:
-- **in_use** → The product is clearly still in active daily use.  
+- **dont_sell** → The product is clearly still in active daily use.  
 - **resell_candidate** → The product is old, has issues, shows signs of repair/fixing, is unused for a long time, or has no strong signals of active use. Even if it is faulty or broken, consider it a resale candidate.  
 - **uncertain** → When there is not enough evidence to decide confidently whether it is actively in use or a resale candidate.  
 
@@ -41,7 +41,7 @@ Rules:
 Return ONLY JSON in this format:
 {{
   "id": "{product.get('id')}",
-  "status": "in_use|resell_candidate|uncertain"
+  "status": "dont_sell|resell_candidate|uncertain"
 }}
 
 Do not write anything else.

@@ -4,12 +4,40 @@ import os, json, threading, datetime, time
 from hushh_mcp.vault.json_vault import load_encrypted_json
 from hushh_mcp.vault.json_vault import save_encrypted_json, load_encrypted_json
 
-# Windows-specific imports
+from flask import request
 import pythoncom
 import wmi
-
 app = Flask(__name__)
-CORS(app)  # allow Chrome extension to connect
+CORS(app)
+# Products API endpoints
+@app.route("/products", methods=["GET"])
+def get_products():
+    try:
+        data = load_encrypted_json(os.path.join(JSONS_DIR, "usage.json"))
+        return jsonify(data)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route("/products/update-status", methods=["POST"])
+def update_product_status():
+    req = request.get_json()
+    id = req.get("id")
+    new_status = req.get("newStatus")
+    if id is None or new_status is None:
+        return jsonify({"error": "Missing id or newStatus"}), 400
+    try:
+        data = load_encrypted_json(os.path.join(JSONS_DIR, "usage.json"))
+        products = data.get("products", [])
+        idx = next((i for i, p in enumerate(products) if p.get("id") == id), None)
+        if idx is None:
+            return jsonify({"error": "Product not found"}), 404
+        products[idx]["status"] = new_status
+        data["products"] = products
+        save_encrypted_json(data, os.path.join(JSONS_DIR, "usage.json"))
+        return jsonify({"success": True})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+  # allow Chrome extension to connect
 
 JSONS_DIR = os.path.join(os.path.dirname(__file__), "jsons")
 OUTPUT_FILE = os.path.join(JSONS_DIR, "history.json")

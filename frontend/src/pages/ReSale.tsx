@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Sidebar, SidebarContent, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Package, DollarSign, Settings, User, Clock, Shield, AlertTriangle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { updateProductStatus } from "@/lib/productApi";
+import { updateProductStatus, fetchProducts } from "@/lib/productApi";
 
 interface Product {
   id: number;
@@ -23,12 +23,12 @@ const ReSale = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/src/data/products.json')
-      .then(res => res.json())
+    fetchProducts()
       .then(data => {
         setProducts(data.products);
         setLoading(false);
-      });
+      })
+      .catch(() => setLoading(false));
   }, []);
 
   // Status click logic
@@ -41,8 +41,7 @@ const ReSale = () => {
     try {
       await updateProductStatus(product.id, newStatus);
       // Refetch products after update
-      fetch('/src/data/products.json')
-        .then(res => res.json())
+      fetchProducts()
         .then(data => {
           setProducts(data.products);
         });

@@ -6,7 +6,7 @@ import { Sidebar, SidebarContent, SidebarProvider, SidebarTrigger } from "@/comp
 import { Package, DollarSign, Settings, User, Clock, Shield, AlertTriangle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-import { updateProductStatus } from "@/lib/productApi";
+import { updateProductStatus, fetchProducts } from "@/lib/productApi";
 
 interface Product {
   id: number;
@@ -25,12 +25,12 @@ const Application = () => {
 
   // Fetch products from backend file
   useEffect(() => {
-    fetch('/src/data/products.json')
-      .then(res => res.json())
+    fetchProducts()
       .then(data => {
         setProducts(data.products.filter((p: Product) => p.status === 'resell_candidate'));
         setLoading(false);
-      });
+      })
+      .catch(() => setLoading(false));
   }, []);
 
   // Status click logic
@@ -43,8 +43,7 @@ const Application = () => {
     try {
       await updateProductStatus(product.id, newStatus);
       // Refetch products after update
-      fetch('/src/data/products.json')
-        .then(res => res.json())
+      fetchProducts()
         .then(data => {
           setProducts(data.products.filter((p: Product) => p.status === 'resell_candidate'));
         });
