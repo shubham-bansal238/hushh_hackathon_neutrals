@@ -1,15 +1,7 @@
 {
-  "2": {
-    "id": "2",
-    "matched_queries": [
-      "Samsung M31 - Google Search",
-      "listen - Google Search"
-    ]
-  },
-  "3": {
-    "id": "3",
-    "matched_queries": [
-      "Whirlpool WM 7KG Grey needs fixing - Google Search"
-    ]
-  }
+  "ciphertext": "29scVwAJGEULddv0ab4u5R9WMZuos2oVIVP0bHfQsyMLQuEwMYr9cBEZCui4sEtsvjxupbBy3A30+lzAvfWpL+HSCX4Mvj6mUAS+KnXcs/RiknW8N/hk85AnoEVHX7i4iGIf+6MghK1QoZVOaiNGANFSISpYzkqo9RW37La5OdmxZa6rpTIOoilY9E5qy931NkpCONwrB8rFCBFM6twY7twmJHcoQPBBTS5TS/nJ91chnj4UzbZV6GJ3bIObCkEXJ8ZEFQEF3EFUB6/3BZUBtzJGf9FHkveN+fk6BTc53hObtPfHhIybFq3z",
+  "iv": "pvBvPFm+COlpypdf",
+  "tag": "8deOAPIiX66x16a7gchqFg==",
+  "encoding": "base64",
+  "algorithm": "aes-256-gcm"
 }

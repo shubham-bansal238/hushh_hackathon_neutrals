@@ -1,43 +1,7 @@
 {
-  "products": [
-    {
-      "id": 1,
-      "itemname": "Artis AR0506 65Watt Laptop Charger/Adapter with Power Cord Compatible with Lenovo Laptops (20V/3.25A, 65Watt) (USB Pin) (BIS Certified)",
-      "purchase_price": 699,
-      "purchase_date": "2025-02-18",
-      "price_range": "350 to 450 INR",
-      "confidence": "medium",
-      "chrome_browsing_matched_url_history": null,
-      "calender_last_matched": null
-    },
-    {
-      "id": 2,
-      "itemname": "Samsung Galaxy M31 (Space Black, 6GB RAM, 64GB Storage) Sold by STPL Exclusive Online",
-      "purchase_price": 14999,
-      "purchase_date": "2020-03-18",
-      "price_range": "3000 to 4500 INR",
-      "confidence": "medium",
-      "chrome_browsing_matched_url_history": [
-        "Samsung M31 - Google Search",
-        "listen - Google Search"
-      ],
-      "calender_last_matched": null
-    },
-    {
-      "id": 3,
-      "itemname": "WHIRLPOOL W/M TL 7KG WM ELITE GREY",
-      "purchase_price": 17700,
-      "purchase_date": "2019-12-29",
-      "price_range": "3000 to 5000 INR",
-      "confidence": "medium",
-      "chrome_browsing_matched_url_history": [
-        "Whirlpool WM 7KG Grey needs fixing - Google Search"
-      ],
-      "calender_last_matched": null
-    }
-  ],
-  "driver_history_from_pc": {
-    "Headset (JBL TUNE510BT Hands-Free AG Audio)": "29/07/2025",
-    "Headphones (JBL TUNE510BT Stereo)": "29/07/2025"
-  }
+  "ciphertext": "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",
+  "iv": "LhAutOuiyBv32VaU",
+  "tag": "DxC9Ivzie2KX8+bJo/2PPA==",
+  "encoding": "base64",
+  "algorithm": "aes-256-gcm"
 }

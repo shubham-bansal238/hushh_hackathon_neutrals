@@ -53,6 +53,7 @@ def call_groq(prompt):
 def main():
     items = load_encrypted_json(INPUT_FILE)
 
+
     output = []
     for product in tqdm(items, desc="Processing items"):
         prompt = build_prompt(product)

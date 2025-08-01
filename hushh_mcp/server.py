@@ -1,6 +1,8 @@
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory, Response
 from flask_cors import CORS
 import os, json, threading, datetime, time
+from hushh_mcp.vault.json_vault import load_encrypted_json
+from hushh_mcp.vault.json_vault import save_encrypted_json, load_encrypted_json
 
 # Windows-specific imports
 import pythoncom
@@ -13,10 +15,24 @@ JSONS_DIR = os.path.join(os.path.dirname(__file__), "jsons")
 OUTPUT_FILE = os.path.join(JSONS_DIR, "history.json")
 INPUT_FILE = os.path.join(JSONS_DIR, "context.json")
 DRIVER_FILE = os.path.join(JSONS_DIR, "driver.json")
+MASTER_DIR = os.path.join(JSONS_DIR, "usage.json")
 
 @app.route("/context.json", methods=["GET"])
 def get_context():
-    return send_from_directory(JSONS_DIR, "context.json")
+    try:
+        data = load_encrypted_json(INPUT_FILE)
+        return Response(json.dumps(data), mimetype="application/json")
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+@app.route("/usage.json", methods=["GET"])
+def get_usage():
+    try:
+        data = load_encrypted_json(MASTER_DIR)
+        return Response(json.dumps(data), mimetype="application/json")
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
 
 @app.route("/save-history", methods=["POST"])
 def save_history():
@@ -28,8 +44,10 @@ def save_history():
 
     # Load existing history
     if os.path.exists(OUTPUT_FILE):
-        with open(OUTPUT_FILE, "r", encoding="utf-8") as f:
-            history = json.load(f)
+        try:
+            history = load_encrypted_json(OUTPUT_FILE)
+        except Exception:
+            history = {}
     else:
         history = {}
 
@@ -40,8 +58,7 @@ def save_history():
         history[pid]["matched_queries"].extend(entry["matched_queries"])
 
     # Save back
-    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-        json.dump(history, f, indent=2, ensure_ascii=False)
+    save_encrypted_json(history, OUTPUT_FILE)
 
     return jsonify({"status": "ok", "saved_to": OUTPUT_FILE})
 
@@ -54,8 +71,10 @@ def driver_monitor():
 
     # Load existing driver log
     if os.path.exists(DRIVER_FILE):
-        with open(DRIVER_FILE, "r", encoding="utf-8") as f:
-            driver_log = json.load(f)
+        try:
+            driver_log = load_encrypted_json(DRIVER_FILE)
+        except Exception:
+            driver_log = {}
     else:
         driver_log = {}
 
@@ -74,8 +93,7 @@ def driver_monitor():
 
             driver_log[name] = now
 
-            with open(DRIVER_FILE, "w", encoding="utf-8") as f:
-                json.dump(driver_log, f, indent=2, ensure_ascii=False)
+            save_encrypted_json(driver_log, DRIVER_FILE)
 
             print(f"✅ Driver activated: {name} on {now}")
         except Exception as e:

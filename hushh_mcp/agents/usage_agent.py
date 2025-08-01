@@ -32,7 +32,7 @@ For the given product, decide if its current status is one of:
 - **uncertain** → When there is not enough evidence to decide confidently whether it is actively in use or a resale candidate.  
 
 Rules:
-- If there is **recent driver activity**, assume the product is actively in use.  
+- If there is **recent driver activity**, assume the product is actively in use. (But the product should be in the input json)
 - If browsing history or calendar mentions the product with **repair/fixing keywords**, mark it as a **resell_candidate**.  
 - If the product is old (several years), has no recent usage signals, or is lower-value but still functional, classify as **resell_candidate**.  
 - If no clear evidence exists and the product is not very old, classify as **uncertain**.  

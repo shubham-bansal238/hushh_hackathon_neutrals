@@ -1,4 +1,7 @@
 {
-  "Headset (JBL TUNE510BT Hands-Free AG Audio)": "29/07/2025",
-  "Headphones (JBL TUNE510BT Stereo)": "29/07/2025"
+  "ciphertext": "tyKvRRmWt47nOcVSydj0DtdlHJkSRqC7ooSkQo8TXAt9MN1tNwoTP1880PKDWXJ7vzEAYkuGR5N2giWLRdXkqHIBxsSzsbylHakfrfnK3VZGRcNwHQRWnfiVW9RY2/BdDWiOlX62IiUbmnAlnb1vsPk=",
+  "iv": "oiGa1m5O9NhyLMoP",
+  "tag": "zuMZilp04c8CsiAfEe7lRQ==",
+  "encoding": "base64",
+  "algorithm": "aes-256-gcm"
 }

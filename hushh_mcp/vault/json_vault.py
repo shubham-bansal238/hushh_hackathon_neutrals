@@ -5,6 +5,9 @@ import json
 from typing import Any
 from hushh_mcp.vault.encrypt import encrypt_data, decrypt_data
 from hushh_mcp.types import EncryptedPayload
+from dotenv import load_dotenv
+
+load_dotenv()
 
 VAULT_KEY_ENV = "VAULT_ENCRYPTION_KEY"
 

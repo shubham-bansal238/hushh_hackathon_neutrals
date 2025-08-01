@@ -29,10 +29,10 @@ def main():
     calendar = load_json(CALENDAR_FILE, {})
     driver = load_json(DRIVER_FILE, {})
 
-    # Convert resale list -> dict keyed by id
     resale_map = {str(item["id"]): item for item in resale}
-    # history.json already dict keyed by id
-    # calendar_lastseen.json assumed dict keyed by id
+
+    if isinstance(calendar, list):
+        calendar = {str(entry["id"]): entry for entry in calendar if "id" in entry}
 
     master_data = []
 

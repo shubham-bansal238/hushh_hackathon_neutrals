@@ -1,0 +1,7 @@
+{
+  "ciphertext": "biYS2P2/+NMDg32vvQDNFeiXrvR+9DJ4LxoIssyUuIQxiL8ubO+1gkBQK1YuruScRLXmaU021Gk6QxJPe/udoBLn1P5uUV2yflasaaylU6LkMD2cb0nnDxvAwApKkEdyw1XnSRaAZbf7zpp6g2RNmJS79drMVITwYn+Hbkowib6jBfiJjI+Ol4OSrN9benpMvni0HGchDvGqWwCcH9t8et9zXkUrOKdJarm/J76c4DWD2/NBtJl5lSELzYwNyLOVq7/IylqrRlqgzwysilTbI31DMgKM5A==",
+  "iv": "XXNOQzXXDureQxmJ",
+  "tag": "boyGxeVgzttMH+DE4SwZ7g==",
+  "encoding": "base64",
+  "algorithm": "aes-256-gcm"
+}

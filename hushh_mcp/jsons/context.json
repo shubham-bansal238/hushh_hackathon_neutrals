@@ -1,69 +1,7 @@
-[
-  {
-    "id": 1,
-    "price": "699",
-    "canonical_name": "Artis AR0506 65Watt Laptop Charger",
-    "aliases": [
-      "Lenovo Laptop Charger",
-      "Artis AR0506 Adapter",
-      "65Watt Power Adapter",
-      "Lenovo Power Cord",
-      "USB Pin Charger"
-    ],
-    "context_keywords": [
-      "charge",
-      "power",
-      "laptop",
-      "Lenovo",
-      "travel",
-      "work",
-      "office",
-      "study"
-    ]
-  },
-  {
-    "id": 2,
-    "price": "14999",
-    "canonical_name": "Samsung Galaxy M31",
-    "aliases": [
-      "Samsung M31",
-      "Galaxy M31",
-      "M31 Space Black",
-      "Samsung Galaxy M31 6GB RAM",
-      "Galaxy M31 64GB Storage"
-    ],
-    "context_keywords": [
-      "gaming",
-      "photography",
-      "social media",
-      "streaming",
-      "Android",
-      "Samsung Health",
-      "Google Assistant"
-    ]
-  },
-  {
-    "id": 3,
-    "price": "17700",
-    "canonical_name": "Whirlpool 7KG Washing Machine Elite Grey",
-    "aliases": [
-      "Whirlpool WM Elite Grey 7KG",
-      "Whirlpool 7KG Grey Washing Machine",
-      "Whirlpool Elite Washing Machine 7KG Grey",
-      "Whirlpool WM 7KG Grey",
-      "Whirlpool Grey 7KG Washing Machine Elite"
-    ],
-    "context_keywords": [
-      "laundry",
-      "wash",
-      "clean",
-      "clothes",
-      "home",
-      "appliance",
-      "household",
-      "domestic",
-      "chore",
-      "cleaning"
-    ]
-  }
-]
+{
+  "ciphertext": "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",
+  "iv": "soKhnriwQtfe4shq",
+  "tag": "iLSu2qi2CNlVkXacNCIT4Q==",
+  "encoding": "base64",
+  "algorithm": "aes-256-gcm"
+}
