@@ -128,7 +128,7 @@ def main():
 
     save_encrypted_json(final_output, OUTPUT_FILE)
 
-    print(f"\nFinished. Results written to {OUTPUT_FILE}")
+    print(f"\nUsage data saved")
 
 if __name__ == "__main__":
     main()

@@ -103,7 +103,7 @@ def main():
 
     save_encrypted_json(output, OUTPUT_FILE)
 
-    print(f"\nFinished. {len(output)} valuations written to {OUTPUT_FILE}")
+    print(f"\nCost of. {len(output)} product saved")
 
 if __name__ == "__main__":
     main()

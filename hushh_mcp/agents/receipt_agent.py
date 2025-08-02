@@ -263,6 +263,7 @@ Here is the purchase data:
 
     # Save final result
     save_encrypted_json(final_with_ids, OUTPUT_PATH)
+    print(f"Final product data saved")
 
 if __name__ == "__main__":
     main()

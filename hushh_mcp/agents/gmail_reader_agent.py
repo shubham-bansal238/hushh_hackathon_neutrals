@@ -138,7 +138,7 @@ def main():
 
     # Save output
     save_encrypted_json(metadata_list, INPUT_FILE)
-    print(f"Filtered metadata saved to {INPUT_FILE} (encrypted)")
+    print(f"Filtered relevant emails")
 
 if __name__ == '__main__':
     main()

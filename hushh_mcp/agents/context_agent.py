@@ -70,7 +70,7 @@ def main():
 
     save_encrypted_json(output, OUTPUT_FILE)
 
-    print(f"\nOutput written to {OUTPUT_FILE}")
+    print(f"\nContext data saved")
 
 if __name__ == "__main__":
     main()

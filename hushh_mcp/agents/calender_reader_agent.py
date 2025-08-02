@@ -113,7 +113,7 @@ def main():
 
     # Save results
     save_result(result)
-    print(f"Keyword-date mapping saved to {OUTPUT_PATH}")
+    print(f"Calendar data saved")
 
 if __name__ == "__main__":
     main()
