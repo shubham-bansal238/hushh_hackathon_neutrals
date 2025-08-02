@@ -1,180 +1,100 @@
-# 🤫 Hushh AI Consent Protocol (HushhMCP)
 
-Welcome to the official Python implementation of the **HushhMCP** — a programmable trust and consent protocol for AI agents. This repo powers the agentic infrastructure for the **Hushh PDA Hackathon**, where real humans give real consent to AI systems acting on their behalf.
 
-> 🔐 Built with privacy, security, modularity, and elegance in mind.
+# 📦 Personal Economy Agent
 
----
+## 🚀 What is it?
 
-## 🧠 What is HushhMCP?
+The **Personal Economy Agent** is your AI-powered assistant that helps you unlock hidden value from your gadgets. Most of us buy electronics like phones, headphones, webcams, or laptops — but after a while, they sit unused in drawers, even though they still have resale value.
 
-HushhMCP (Hushh Micro Consent Protocol) is the cryptographic backbone for **Personal Data Agents (PDAs)** that can:
-
-- 🔐 Issue & verify **cryptographically signed consent tokens**
-- 🔁 Delegate trust across **agent-to-agent (A2A) links**
-- 🗄️ Store & retrieve **AES-encrypted personal data**
-- 🤖 Operate within well-scoped, revocable, user-issued permissions
-
-Inspired by biology (operons), economics (trust-based contracts), and real-world privacy laws.
+This project automatically tracks your electronic purchases, checks whether they’re still being used, and estimates their **realistic resale value** today. All data is kept private and encrypted in your **Hushh Vault**, with full user consent managed through the **Hushh MCP protocol**.
 
 ---
 
-## 🏗️ Key Concepts
+## 💡 Why is it useful?
 
-| Concept         | Description                                                                 |
-|-----------------|-----------------------------------------------------------------------------|
-| **Consent Token** | A signed proof that a user granted an agent a specific permission          |
-| **TrustLink**     | A time-bound signed relationship between two agents                        |
-| **Vault**         | An encrypted datastore with AES-256-GCM for storing user data              |
-| **Operons**       | Reusable, modular agent actions — like genes in biology                    |
-| **Agents**        | Modular, scoped AI workers that operate on your behalf, with your consent  |
+* People forget about the **resale value of their old gadgets**.
+* Traditional expense trackers only tell you what you spent — not what you can still earn back.
+* With this system, your electronics become a **“hidden wallet”** — money you can recover anytime.
+* Runs with **data security at the core** thanks to Hushh MCP.
 
 ---
 
-## 📦 Folder Structure
+## ✨ Key Features
 
-```bash
-hushh-ai-consent-protocol/
-├── hushh_mcp/                # Core protocol logic (modular)
-│   ├── config.py             # .env loader + global settings
-│   ├── constants.py          # Consent scopes, prefixes, default values
-│   ├── types.py              # Pydantic models: ConsentToken, TrustLink, VaultRecord
-│   ├── consent/token.py      # issue_token(), validate_token(), revoke_token()
-│   ├── trust/link.py         # TrustLink creation + verification
-│   ├── vault/encrypt.py      # AES-256-GCM encryption/decryption
-│   ├── agents/               # Real & sample agents
-│   │   ├── shopping.py       # Uses consent to fetch personalized deals
-│   │   └── identity.py       # Validates email + issues TrustLink
-│   ├── operons/verify_email.py  # Reusable email validation logic
-│   └── cli/generate_agent.py    # CLI to scaffold new agents
-├── tests/                   # All pytest test cases
-├── .env.example            # Sample environment variables
-├── requirements.txt        # All runtime + dev dependencies
-├── README.md               # You are here
-└── docs/                   # Hackathon + protocol documentation
-````
+* **Email Receipt Extraction** → Reads purchase invoices from Gmail/Outlook (Amazon, Flipkart, Croma, etc.) to identify item, price, purchase date, and platform.
+* **Usage Detection (multi-signal)** →
+
+  * **Calendar mentions** (e.g., meetings with "Zoom webcam" hint).
+  * **Browser history** (e.g., searches like *“how to fix headphones not charging”* or *“buy new mouse”*).
+  * **Email mentions** (e.g., warranty or repair emails).
+  * **Driver/Device metadata** (e.g., was this webcam connected to the system recently? Battery check for headphones?).
+* **Valuation Agent** → Estimates realistic resale prices based on category, age, and market trends in India.
+* **Resale Deals Dashboard** → A simple dashboard that shows all your gadgets with their current resale values.
+* **Privacy by Design** → All personal data is stored encrypted in the **Hushh Vault** with full user consent managed by the MCP protocol.
 
 ---
 
-## 🚀 Getting Started
+## ⚙️ How it Works (Step by Step)
 
-### 1. 📥 Clone & Install
+1. **Receipt Agent** scans your emails daily → extracts product name, purchase date, price, and platform.
+2. Data is stored in the **Hushh Vault** securely with user consent.
+3. **Usage Agent** combines multiple signals:
 
-```bash
-git clone https://github.com/yourname/hushh-ai-consent-protocol.git
-cd hushh-ai-consent-protocol
-pip install -r requirements.txt
-```
-
-### 2. 🔐 Configure Secrets
-
-Create your `.env` file:
-
-```bash
-cp .env.example .env
-```
-
-And paste in secure keys (generated via `python -c "import secrets; print(secrets.token_hex(32))"`).
+   * Looks for related searches in **browser history**.
+   * Checks **OS driver/device metadata** to see if the product was connected recently.
+   * Scans **calendar events** for mentions of that device.
+   * Reads **emails** for repair/warranty/service activity.
+     Together, these signals form a picture of whether the product is *active, inactive, or uncertain*.
+4. **Valuation Agent** calculates the resale value using depreciation logic + GPT reasoning.
+5. **Resale Deals Agent** compiles all active items with their updated resale values and shows them in the dashboard.
 
 ---
 
-## 🧪 Running Tests
+## 🔐 Trust & Privacy
 
-```bash
-pytest
-```
+This project integrates the **Hushh MCP Protocol** for:
 
-Includes full test coverage for:
-
-* Consent issuance, validation, revocation
-* TrustLink creation, scope checks
-* Vault encryption roundtrip
-* Real agent workflows (e.g. shopping, identity)
+* **Consent Management** → User decides what data can be read.
+* **Trust Links** → Verified, auditable connections between agents.
+* **Vault Encryption** → All personal data stays private and encrypted.
 
 ---
 
-## ⚙️ CLI Agent Generator
+## 🖥️ Example Use Case
 
-Scaffold a new agent with:
-
-```bash
-python hushh_mcp/cli/generate_agent.py finance-assistant
-```
-
-Outputs:
-
-```bash
-hushh_mcp/agents/finance_assistant/index.py
-hushh_mcp/agents/finance_assistant/manifest.py
-```
+* You bought a Logitech webcam in 2023.
+* The system sees **no recent Zoom calendar meetings**, **no browser searches about webcam use**, and **no driver connection for 2 months**.
+* It classifies the webcam as “inactive” and estimates resale at ₹2200.
+* On the dashboard, you see this resale deal and can decide whether to sell or keep.
 
 ---
 
-## 🤖 Sample Agents
-
-### 🛍️ `agent_shopper`
-
-* Requires: `vault.read.email`
-* Returns personalized product recommendations
-
-### 🪪 `agent_identity`
-
-* Validates user email
-* Issues TrustLink to other agents with scoped delegation
+👉 With this, your gadgets stop being “forgotten junk” and start becoming **hidden cash you can unlock anytime**.
 
 ---
-
-## 🔐 Security Architecture
-
-* All **tokens and trust links are stateless + signed** using HMAC-SHA256
-* Vault data is **encrypted using AES-256-GCM**, with IV + tag integrity
-* Agent actions are **fully gated by scope + revocation checks**
-* System is **testable, auditable, and modular**
-
----
-
-## 📚 Documentation
-
-Explore full guides in `/docs`:
-
-* `docs/index.md` — Overview & roadmap
-* `docs/consent.md` — Consent token lifecycle
-* `docs/agents.md` — Building custom agents
-* `docs/faq.md` — Hackathon questions
-* `docs/manifesto.md` — Design philosophy
-
----
-
-## 💡 Roadmap
-
-* [ ] Add persistent TrustLink registry (e.g. Redis)
-* [ ] Extend scope framework for write-level permissions
-* [ ] Launch Open Agent Directory
-* [ ] Release SDKs for iOS and Android
-
----
-
-## 🏁 Built For: Hushh PDA Hackathon
-
-* 🎓 Hosted in collaboration with DAV Team and Analytics Club, IIT Bombay
-* 💰 INR 1,70,000+ prize pool
-* 👩‍💻 Real-world AI agents
-* 🚀 Build the infrastructure for programmable trust
-
----
-
-## 🫱🏽‍🫲 Contributing
-
-* Fork → Build → Pull Request
-* Add a test for every feature
-* Run `pytest` before submitting
-
----
-
-## ⚖️ License
-
-MIT — open to the world.
-
-Let’s build a better agentic internet together.
+## How to run this project
 
 ```
+cd frontend
+npm install
+npm run dev
+```
+the above snippet is for frontend
+
+```
+python -m hushh_mcp.server
+```
+to run the server
+
+Now to run the chrome extension
+
+- Open ```chrome://extensions/```
+- Turn on developer mode
+- select the folder ```hushh_mcp/chrome-extension```
+- Do it after running the script
+- click on the extension and click ```start monitoring```
+- Thats it!
+
+NOTE: DONT FORGET TO INSTALL DEPENDENCIES FROM ```requirements.txt``` for agents
+
+---
