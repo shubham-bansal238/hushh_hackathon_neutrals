@@ -92,19 +92,18 @@ def main():
     # Verify Consent
     token = load_consent_token()
     if not token:
-        print("⚠️  No consent token found. Run: python -m hushh_mcp.cli.authenticate_user")
+        print("No consent token found. Run: python -m hushh_mcp.cli.authenticate_user")
         return
     try:
         consent = validate_token(token, expected_scope=ConsentScope.FETCH_EMAIL)
-        print(f"✅ Consent verified.")
     except Exception as e:
-        print(f"❌ Consent token invalid or expired: {e}")
+        print(f"Consent token invalid or expired: {e}")
         return
 
     # Authenticate Google
     service = authenticate_google()
     if not service:
-        print("❌ Google authentication failed.")
+        print("Google authentication failed.")
         return
 
     # Define stores and the keywords to look for in subject or body
@@ -118,7 +117,6 @@ def main():
     # Gmail query: fetch by sender only
     query = build_store_subject_query(store_keywords)
     message_ids = get_matching_message_ids(service, query)
-    print(f"🔍 Gmail returned {len(message_ids)} matching emails.")
 
     metadata_list = []
     for msg_id in message_ids:
@@ -136,11 +134,11 @@ def main():
                     break
 
         except Exception as e:
-            print(f"⚠️ Error parsing message {msg_id}: {e}")
+            print(f"Error parsing message {msg_id}: {e}")
 
     # Save output
     save_encrypted_json(metadata_list, INPUT_FILE)
-    print(f"✅ Filtered metadata saved to {INPUT_FILE} (encrypted)")
+    print(f"Filtered metadata saved to {INPUT_FILE} (encrypted)")
 
 if __name__ == '__main__':
     main()

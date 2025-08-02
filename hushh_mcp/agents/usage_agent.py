@@ -70,7 +70,7 @@ def call_gemini(prompt):
         response = model.generate_content(prompt)
         return response.text.strip()
     except Exception as e:
-        print("❌ Gemini API call failed:", str(e))
+        print("Gemini API call failed:", str(e))
         return None
 
 def main():
@@ -87,7 +87,7 @@ def main():
         response_text = call_gemini(prompt)
 
         if not response_text:
-            print(f"⚠️ No response for: {product.get('itemname')}")
+            print(f"No response for: {product.get('itemname')}")
             product["status"] = "uncertain"
             results.append(product)
             continue
@@ -96,11 +96,29 @@ def main():
         if parsed and "status" in parsed:
             product["status"] = parsed["status"]
         else:
-            print(f"❌ Failed to parse JSON for: {product.get('itemname')}")
+            print(f"Failed to parse JSON for: {product.get('itemname')}")
             print("Raw response:", response_text)
             product["status"] = "uncertain"
 
         results.append(product)
+
+    # Map reasoning from resale_cost.json for matching ids
+    resale_cost_path = os.path.join(JSONS_DIR, "resale_cost.json")
+    try:
+        resale_cost_data = load_encrypted_json(resale_cost_path)
+    except Exception:
+        resale_cost_data = []
+    # Build a dict for fast lookup
+    reasoning_map = {}
+    if isinstance(resale_cost_data, list):
+        for entry in resale_cost_data:
+            if isinstance(entry, dict) and "id" in entry and "reasoning" in entry:
+                reasoning_map[entry["id"]] = entry["reasoning"]
+    # Attach reasoning to products
+    for product in results:
+        pid = product.get("id")
+        if pid in reasoning_map:
+            product["reasoning"] = reasoning_map[pid]
 
     # Keep driver_history_from_pc unchanged
     final_output = {
@@ -110,7 +128,7 @@ def main():
 
     save_encrypted_json(final_output, OUTPUT_FILE)
 
-    print(f"\n✅ Finished. Results written to {OUTPUT_FILE}")
+    print(f"\nFinished. Results written to {OUTPUT_FILE}")
 
 if __name__ == "__main__":
     main()

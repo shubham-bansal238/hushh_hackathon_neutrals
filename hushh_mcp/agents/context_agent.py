@@ -64,13 +64,13 @@ def main():
             parsed = json.loads(raw)
             output.append(parsed)
         except json.JSONDecodeError:
-            print(f"❌ Failed to parse product ID {product['id']}:")
+            print(f"Failed to parse product ID {product['id']}:")
             print(raw)
             continue
 
     save_encrypted_json(output, OUTPUT_FILE)
 
-    print(f"\n✅ Output written to {OUTPUT_FILE}")
+    print(f"\nOutput written to {OUTPUT_FILE}")
 
 if __name__ == "__main__":
     main()

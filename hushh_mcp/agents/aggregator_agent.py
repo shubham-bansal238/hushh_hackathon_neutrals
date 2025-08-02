@@ -65,7 +65,7 @@ def main():
     # Save to master.json (encrypted)
     save_encrypted_json(output, OUTPUT_FILE)
 
-    print(f"✅ Master JSON created at {OUTPUT_FILE} (encrypted)")
+    print(f"Master JSON created at {OUTPUT_FILE} (encrypted)")
 
 if __name__ == "__main__":
     main()

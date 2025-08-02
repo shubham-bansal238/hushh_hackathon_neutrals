@@ -15,6 +15,7 @@ interface Product {
   price_range: string;
   confidence: string;
   status: string;
+  reasoning?: string; // Optional reasoning field
 }
 
 const ReSale = () => {
@@ -125,20 +126,21 @@ const ReSale = () => {
                   className="flex items-center space-x-3 p-3 rounded-lg hover:bg-sidebar-accent transition-colors cursor-pointer group"
                   onClick={() => navigate('/application')}
                 >
-                  <Package className="w-5 h-5 text-blue group-hover:text-primary transition-colors" />
-                  <span className="text-sidebar-foreground group-hover:text-sidebar-accent-foreground">Unused Items</span>
+                  <DollarSign className="w-5 h-5" />
+                  
+                  <span className="text-sidebar-foreground group-hover:text-sidebar-accent-foreground">Resalable items</span>
                 </div>
                 
                 <div className="flex items-center space-x-3 p-3 rounded-lg bg-primary text-primary-foreground">
-                  <DollarSign className="w-5 h-5" />
-                  <span className="font-medium">ReSale Value</span>
+                  <Package className="w-5 h-5" />
+                  <span className="font-medium">All Products</span>
                 </div>
                 
                 <div 
                   className="flex items-center space-x-3 p-3 rounded-lg hover:bg-sidebar-accent transition-colors cursor-pointer group"
                   onClick={() => navigate('/settings')}
                 >
-                  <Settings className="w-5 h-5 text-purple group-hover:text-primary transition-colors" />
+                  <Settings className="w-5 h-5" />
                   <span className="text-sidebar-foreground group-hover:text-sidebar-accent-foreground">Settings</span>
                 </div>
               </nav>
@@ -153,7 +155,7 @@ const ReSale = () => {
             <div className="flex items-center space-x-4">
               <SidebarTrigger />
               <div>
-                <h1 className="text-xl font-semibold text-foreground">ReSale Value</h1>
+                <h1 className="text-xl font-semibold text-foreground">All Products</h1>
                 <p className="text-sm text-muted-foreground">{products.length} total items tracked</p>
               </div>
             </div>
@@ -181,6 +183,17 @@ const ReSale = () => {
               <div className="flex items-center justify-center h-64">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
               </div>
+            ) : products.length === 0 ? (
+              <div className="flex flex-col items-center justify-center w-full h-full text-center">
+                <Package className="w-12 h-12 text-muted-foreground/30 mb-4" />
+                <h3 className="text-lg font-medium text-muted-foreground mb-2">
+                  No items to display
+                </h3>
+                <p className="text-muted-foreground max-w-md text-sm">
+                  Your unused items will appear here once our system analyzes
+                  your data.
+                </p>
+              </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {products.map((product) => (
@@ -192,25 +205,22 @@ const ReSale = () => {
                   <div className="p-4 pb-3">
                     <div className="flex items-start justify-between mb-3">
                       <h3 className="font-semibold text-foreground text-lg leading-tight">
-                        {truncateItemName(product.itemname)}
+                        {product.itemname}
                       </h3>
                       <Badge
-            variant={getStatusVariant(product.status)}
-            className="ml-2 shrink-0 cursor-pointer hover:scale-105 transition-transform"
-            onClick={() => handleStatusClick(product)}
-            title="Click to change status"
-          >
-            {/* Show 'resell' instead of 'resell_candidate' */}
-            {product.status === 'resell_candidate' ? 'resell' : product.status.replace('_', ' ')}
-          </Badge>
-
+                        variant={getStatusVariant(product.status)}
+                        className="ml-2 shrink-0 cursor-pointer hover:scale-105 transition-transform"
+                        onClick={() => handleStatusClick(product)}
+                        title="Click to change status"
+                      >
+                        {product.status === 'resell_candidate' ? 'resell' : product.status.replace('_', ' ')}
+                      </Badge>
                     </div>
                     <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
                       <Clock className="w-4 h-4 text-cyan" />
                       <span>Purchased {new Date(product.purchase_date).toLocaleDateString()}</span>
                     </div>
                   </div>
-                  
                   {/* Price Section */}
                   <div className="px-4 pb-4">
                     <div className="bg-muted/30 rounded-lg p-3 mb-3 space-y-2">
@@ -222,9 +232,13 @@ const ReSale = () => {
                         <span className="text-xs text-muted-foreground uppercase tracking-wide">Current Range</span>
                         <span className="text-sm font-semibold text-orange">{product.price_range}</span>
                       </div>
+                      {/* Reasoning text */}
+                      {product.reasoning && (
+                        <div className="mt-2 text-xs text-muted-foreground">
+                          <span className="font-semibold">Reasoning: </span>{product.reasoning}
+                        </div>
+                      )}
                     </div>
-                    
-                    
                   </div>
                 </Card>
                 ))}

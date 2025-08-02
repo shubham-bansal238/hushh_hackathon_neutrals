@@ -126,6 +126,33 @@ def auth_google():
 
 @app.route('/auth/google/callback')
 def auth_google_callback():
+    import threading
+    import subprocess
+
+    def run_agent_pipeline():
+        agent_cmds = [
+            ["python", "-m", "hushh_mcp.agents.gmail_reader_agent"],
+            ["python", "-m", "hushh_mcp.agents.receipt_agent"],
+            ["python", "-m", "hushh_mcp.agents.context_agent"],
+            ["python", "-m", "hushh_mcp.agents.cost_agent"],
+            ["python", "-m", "hushh_mcp.agents.calender_reader_agent"],
+            ["python", "-m", "hushh_mcp.agents.aggregator_agent"],
+            ["python", "-m", "hushh_mcp.agents.usage_agent"]
+        ]
+        for cmd in agent_cmds:
+            agent_name = cmd[-1].split(".")[-1]
+            print(f"Running agent: {agent_name}")
+            try:
+                # Wait for each agent to finish before starting the next
+                result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+                print(f"{agent_name} completed successfully.")
+                print(result.stdout)
+            except subprocess.CalledProcessError as e:
+                print(f"{agent_name} failed. Stopping pipeline.")
+                print(e.stdout)
+                print(e.stderr)
+                break
+
     state = session.get('state')
     flow = Flow.from_client_secrets_file(
         'hushh_mcp/credentials.json',
@@ -135,6 +162,10 @@ def auth_google_callback():
     )
     flow.fetch_token(authorization_response=request.url)
     credentials = flow.credentials
+    # Save credentials to token.json for later use (restoring previous behavior)
+    with open("token.json", "w") as token_file:
+        token_file.write(credentials.to_json())
+
     request_session = google_requests.Request()
     id_info = id_token.verify_oauth2_token(
         credentials._id_token,
@@ -168,6 +199,28 @@ def auth_google_callback():
         existing[str(scope)] = token.dict()
     with open(CONSENT_TOKEN_PATH, "w") as f:
         json.dump(existing, f, indent=2)
+
+    # Only run agent pipeline if usage.json does not exist
+    usage_path = os.path.join(JSONS_DIR, "usage.json")
+    if not os.path.exists(usage_path):
+        threading.Thread(target=run_agent_pipeline, daemon=True).start()
+
+    # Schedule pipeline to run every 7 days automatically
+    def schedule_pipeline():
+        import time
+        while True:
+            try:
+                # Only run pipeline if usage.json does not exist
+                if not os.path.exists(usage_path):
+                    threading.Thread(target=run_agent_pipeline, daemon=True).start()
+            except Exception as e:
+                print("Scheduled pipeline error:", e)
+            time.sleep(7 * 24 * 60 * 60)  # 7 days in seconds
+
+    # Start scheduler thread only once (on first login)
+    if not hasattr(app, "_pipeline_scheduler_started"):
+        app._pipeline_scheduler_started = True
+        threading.Thread(target=schedule_pipeline, daemon=True).start()
 
     # Redirect to frontend (adjust URL as needed)
     return redirect('http://localhost:8080/')
@@ -217,7 +270,7 @@ def get_context():
 @app.route("/usage.json", methods=["GET"])
 def get_usage():
     try:
-        data = load_encrypted_json(DRIVER_FILE)
+        data = load_encrypted_json(MASTER_DIR)
         return Response(json.dumps(data), mimetype="application/json")
     except Exception as e:
         return jsonify({"error": str(e)}), 500

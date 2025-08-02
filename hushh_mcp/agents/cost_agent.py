@@ -37,7 +37,7 @@ Guidelines:
 - Avoid overpricing. Lean towards the lower safe bracket.
 - Output must include: **price_range**, **confidence** ("high", "medium", or "low"), and **one-line reasoning**.
 - Confidence depends on demand: low demand = low confidence, etc.
-
+think about confidence, dont just write medium for every thing
 reasoning should be just one liner. and the output you will give me should be just in JSON, NOTHING ELSE. I WANT JUST THE JSON  
 TODAY IS JULY 26, 2025. AND HAVE EMPHASIS ON THE INDIAN MARKET AND THE PURCHASE DATE FOR THE VALUE.  
 ONLY return JSON in this format:  
@@ -71,7 +71,7 @@ def call_gemini(prompt):
         response = model.generate_content(prompt)
         return response.text.strip()
     except Exception as e:
-        print("❌ Gemini API call failed:", str(e))
+        print("Gemini API call failed:", str(e))
         return None
 
 def main():
@@ -88,7 +88,7 @@ def main():
         response_text = call_gemini(prompt)
 
         if not response_text:
-            print(f"⚠️ No response for: {product.get('itemname')}")
+            print(f"No response for: {product.get('itemname')}")
             continue
 
         parsed = extract_json(response_text)
@@ -98,12 +98,12 @@ def main():
             parsed["itemname"] = product.get("itemname")
             output.append(parsed)
         else:
-            print(f"❌ Failed to parse JSON for: {product.get('itemname')}")
+            print(f"Failed to parse JSON for: {product.get('itemname')}")
             print("Raw response:", response_text)
 
     save_encrypted_json(output, OUTPUT_FILE)
 
-    print(f"\n✅ Finished. {len(output)} valuations written to {OUTPUT_FILE}")
+    print(f"\nFinished. {len(output)} valuations written to {OUTPUT_FILE}")
 
 if __name__ == "__main__":
     main()

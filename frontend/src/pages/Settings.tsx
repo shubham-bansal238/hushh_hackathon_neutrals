@@ -107,16 +107,17 @@ const Settings = () => {
                   className="flex items-center space-x-3 p-3 rounded-lg hover:bg-sidebar-accent transition-colors cursor-pointer group"
                   onClick={() => navigate('/application')}
                 >
-                  <Package className="w-5 h-5 text-blue group-hover:text-primary transition-colors" />
-                  <span className="text-sidebar-foreground group-hover:text-sidebar-accent-foreground">Unused Items</span>
+                  <DollarSign className="w-5 h-5" />
+                  
+                  <span className="text-sidebar-foreground group-hover:text-sidebar-accent-foreground">Resalable items</span>
                 </div>
 
                 <div
                   className="flex items-center space-x-3 p-3 rounded-lg hover:bg-sidebar-accent transition-colors cursor-pointer group"
                   onClick={() => navigate('/resale')}
                 >
-                  <DollarSign className="w-5 h-5 text-emerald group-hover:text-primary transition-colors" />
-                  <span className="text-sidebar-foreground group-hover:text-sidebar-accent-foreground">ReSale Value</span>
+                  <Package className="w-5 h-5" />
+                  <span className="text-sidebar-foreground group-hover:text-sidebar-accent-foreground">All Products</span>
                 </div>
 
                 <div className="flex items-center space-x-3 p-3 rounded-lg bg-primary text-primary-foreground">

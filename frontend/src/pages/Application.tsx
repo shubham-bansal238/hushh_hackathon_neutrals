@@ -29,6 +29,7 @@ interface Product {
   price_range: string;
   confidence: string;
   status: string;
+  reasoning?: string; // Optional reasoning field
 }
 
 const Application = () => {
@@ -64,9 +65,17 @@ const Application = () => {
   useEffect(() => {
     fetchProducts()
       .then((data) => {
-        setProducts(
-          data.products.filter((p: Product) => p.status === "resell_candidate")
-        );
+        const filtered = data.products.filter((p: Product) => p.status === "resell_candidate");
+        setProducts(filtered);
+        // Log reasoning for each product
+        filtered.forEach((product) => {
+          const itemname = product.itemname || "";
+          if (product.reasoning) {
+            console.log(`Product ID ${product.id} | Item: ${itemname} | Reasoning: ${product.reasoning}`);
+          } else {
+            console.log(`Product ID ${product.id} | Item: ${itemname} | No reasoning.`);
+          }
+        });
         setLoading(false);
       })
       .catch(() => setLoading(false));
@@ -140,17 +149,18 @@ const Application = () => {
               {/* Navigation */}
               <nav className="space-y-2">
                 <div className="flex items-center space-x-3 p-3 rounded-lg bg-primary text-primary-foreground">
-                  <Package className="w-5 h-5" />
-                  <span className="font-medium">Unused Items</span>
+                  
+                  <DollarSign className="w-5 h-5" />
+                  <span className="font-medium">Resalable items</span>
                 </div>
 
                 <div
                   className="flex items-center space-x-3 p-3 rounded-lg hover:bg-sidebar-accent transition-colors cursor-pointer group"
                   onClick={() => navigate("/resale")}
                 >
-                  <DollarSign className="w-5 h-5 text-emerald group-hover:text-primary transition-colors" />
+                  <Package className="w-5 h-5" />
                   <span className="text-sidebar-foreground group-hover:text-sidebar-accent-foreground">
-                    ReSale Value
+                    All Products
                   </span>
                 </div>
 
@@ -158,7 +168,7 @@ const Application = () => {
                   className="flex items-center space-x-3 p-3 rounded-lg hover:bg-sidebar-accent transition-colors cursor-pointer group"
                   onClick={() => navigate("/settings")}
                 >
-                  <Settings className="w-5 h-5 text-purple group-hover:text-primary transition-colors" />
+                  <Settings className="w-5 h-5" />
                   <span className="text-sidebar-foreground group-hover:text-sidebar-accent-foreground">
                     Settings
                   </span>
@@ -176,7 +186,7 @@ const Application = () => {
               <SidebarTrigger />
               <div>
                 <h1 className="text-xl font-semibold text-foreground">
-                  Unused Items
+                  Resalable items
                 </h1>
                 <p className="text-sm text-muted-foreground">
                   {products.length} items need your attention
@@ -229,7 +239,7 @@ const Application = () => {
                     <div className="p-4 pb-3">
                       <div className="flex items-start justify-between mb-3">
                         <h3 className="font-semibold text-foreground text-lg leading-tight">
-                          {truncateItemName(product.itemname)}
+                          {product.itemname}
                         </h3>
                         <Badge
                           variant={getStatusVariant(product.status)}
@@ -238,7 +248,7 @@ const Application = () => {
                           title="Click to change status"
                         >
                           {product.status === "resell_candidate"
-                            ? "resell"
+                            ? "Resell"
                             : product.status.replace("_", " ")}
                         </Badge>
                       </div>
@@ -270,6 +280,12 @@ const Application = () => {
                             {product.price_range}
                           </span>
                         </div>
+                        {/* Reasoning text */}
+                        {product.reasoning && (
+                          <div className="mt-2 text-xs text-muted-foreground">
+                            <span className="font-semibold">Reasoning: </span>{product.reasoning}
+                          </div>
+                        )}
                       </div>
                     </div>
                   </Card>

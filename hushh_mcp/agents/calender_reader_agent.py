@@ -23,7 +23,7 @@ def load_consent_token():
 
 def authenticate_google():
     if not os.path.exists("token.json"):
-        print("⚠️ token.json missing. Run: python -m hushh_mcp.cli.authenticate_user")
+        print("token.json missing. Run: python -m hushh_mcp.cli.authenticate_user")
         return None
     creds = Credentials.from_authorized_user_file("token.json", SCOPES)
     return build("calendar", "v3", credentials=creds)
@@ -90,13 +90,13 @@ def main():
     # Consent verification
     token = load_consent_token()
     if not token:
-        print("⚠️ No consent token. Run: python -m hushh_mcp.cli.authenticate_user")
+        print("No consent token. Run: python -m hushh_mcp.cli.authenticate_user")
         return
     try:
         validate_token(token, expected_scope=ConsentScope.FETCH_CALENDAR)
-        print("✅ Consent token verified.")
+        print("Consent token verified.")
     except Exception as e:
-        print(f"❌ Consent token invalid or expired: {e}")
+        print(f"Consent token invalid or expired: {e}")
         return
 
     # Authenticate with Google Calendar
@@ -113,7 +113,7 @@ def main():
 
     # Save results
     save_result(result)
-    print(f"✅ Keyword-date mapping saved to {OUTPUT_PATH}")
+    print(f"Keyword-date mapping saved to {OUTPUT_PATH}")
 
 if __name__ == "__main__":
     main()
