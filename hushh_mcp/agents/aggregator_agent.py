@@ -25,9 +25,9 @@ def main():
     # Load all JSONs
     products = load_json(PRODUCT_FILE, [])
     resale = load_json(RESALE_FILE, [])
-    history = load_json(HISTORY_FILE, {})
+    history = load_json(HISTORY_FILE, None)
     calendar = load_json(CALENDAR_FILE, {})
-    driver = load_json(DRIVER_FILE, {})
+    driver = load_json(DRIVER_FILE, None)
 
     resale_map = {str(item["id"]): item for item in resale}
 
@@ -39,7 +39,7 @@ def main():
     for product in products:
         pid = str(product["id"])
         resale_info = resale_map.get(pid, {})
-        history_info = history.get(pid, {})
+        history_info = history.get(pid, {}) if history else {}
         calendar_info = calendar.get(pid, {})
 
         consolidated = {
@@ -55,11 +55,12 @@ def main():
 
         master_data.append(consolidated)
 
-    # Add driver history at the end of the JSON
+    # Build output dict
     output = {
-        "products": master_data,
-        "driver_history_from_pc": driver
+        "products": master_data
     }
+    if driver is not None:
+        output["driver_history_from_pc"] = driver
 
     # Save to master.json (encrypted)
     save_encrypted_json(output, OUTPUT_FILE)

@@ -147,6 +147,28 @@ def auth_google_callback():
         'name': id_info.get('name'),
         'picture': id_info.get('picture')
     }
+
+    # Auto-grant consent tokens for mail, calendar, browser, driver
+    user_id = id_info.get('email') or 'demo_user'
+    from hushh_mcp.constants import ConsentScope, CONSENT_TOKEN_PATH, DEFAULT_CONSENT_TOKEN_EXPIRY_MS
+    from hushh_mcp.cli.authenticate_user import issue_token
+    agent_map = {
+        'gmail_reader_agent': ConsentScope.FETCH_EMAIL,
+        'calendar_reader_agent': ConsentScope.FETCH_CALENDAR,
+        'history_agent': ConsentScope.FETCH_BROWSER_HISTORY,
+        'driver_agent': ConsentScope.FETCH_DRIVER
+    }
+    if os.path.exists(CONSENT_TOKEN_PATH):
+        with open(CONSENT_TOKEN_PATH) as f:
+            existing = json.load(f)
+    else:
+        existing = {}
+    for agent_id, scope in agent_map.items():
+        token = issue_token(user_id=user_id, agent_id=agent_id, scope=scope, expires_in_ms=DEFAULT_CONSENT_TOKEN_EXPIRY_MS)
+        existing[str(scope)] = token.dict()
+    with open(CONSENT_TOKEN_PATH, "w") as f:
+        json.dump(existing, f, indent=2)
+
     # Redirect to frontend (adjust URL as needed)
     return redirect('http://localhost:8080/')
 
