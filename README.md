@@ -97,4 +97,8 @@ Now to run the chrome extension
 
 NOTE: DONT FORGET TO INSTALL DEPENDENCIES FROM ```requirements.txt``` for agents
 
+## This is the flow of my project and it is explained in the video
+
+![My Image](project_flow.jpg)
+
 ---
