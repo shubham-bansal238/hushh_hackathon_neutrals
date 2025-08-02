@@ -8,60 +8,63 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Dark theme design system inspired by modern login interfaces */
-    --background: 220 13% 9%;
-    --foreground: 220 9% 95%;
+    /* Modern minimalist design system - sleek & colorful */
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
 
-    --card: 220 13% 11%;
-    --card-foreground: 220 9% 95%;
+    --card: 240 10% 6%;
+    --card-foreground: 0 0% 98%;
 
-    --popover: 220 13% 11%;
-    --popover-foreground: 220 9% 95%;
+    --popover: 240 10% 6%;
+    --popover-foreground: 0 0% 98%;
 
-    --primary: 214 100% 70%;
-    --primary-foreground: 220 13% 9%;
+    --primary: 142 76% 36%;
+    --primary-foreground: 355 100% 97%;
 
-    --secondary: 220 13% 15%;
-    --secondary-foreground: 220 9% 95%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
 
-    --muted: 220 13% 15%;
-    --muted-foreground: 220 9% 65%;
+    --muted: 240 4.8% 8%;
+    --muted-foreground: 240 5% 64.9%;
 
-    --accent: 220 13% 18%;
-    --accent-foreground: 220 9% 95%;
+    --accent: 12 6.5% 15.1%;
+    --accent-foreground: 0 0% 98%;
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 220 9% 95%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 85.7% 97.3%;
 
-    --border: 220 13% 18%;
-    --input: 220 13% 15%;
-    --ring: 214 100% 70%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 142 76% 36%;
 
-    --radius: 0.75rem;
+    --radius: 0.5rem;
 
-    /* Gradient backgrounds */
-    --gradient-primary: linear-gradient(135deg, hsl(214 100% 70%), hsl(250 100% 75%));
-    --gradient-background: radial-gradient(ellipse at center, hsl(220 13% 12%) 0%, hsl(220 13% 9%) 100%);
-    --gradient-card: linear-gradient(135deg, hsl(220 13% 11%) 0%, hsl(220 13% 13%) 100%);
-    --gradient-subtle: linear-gradient(180deg, hsl(220 13% 9%) 0%, hsl(220 13% 11%) 100%);
-    
-    /* Sidebar colors for application */
-    --sidebar-background: 220 13% 11%;
-    --sidebar-foreground: 220 9% 80%;
-    --sidebar-primary: 214 100% 70%;
-    --sidebar-primary-foreground: 220 13% 9%;
-    --sidebar-accent: 220 13% 15%;
-    --sidebar-accent-foreground: 220 9% 95%;
-    --sidebar-border: 220 13% 18%;
-    --sidebar-ring: 214 100% 70%;
+    /* Clean accent colors */
+    --orange: 25 95% 53%;
+    --blue: 221 83% 53%;
+    --purple: 262 83% 58%;
+    --pink: 336 84% 57%;
+    --yellow: 47 96% 53%;
+    --emerald: 160 84% 39%;
+    --cyan: 189 94% 43%;
 
-    /* Shadows with primary color glow */
-    --shadow-glow: 0 0 40px hsl(214 100% 70% / 0.3);
-    --shadow-card: 0 4px 20px hsl(220 13% 5% / 0.5);
-    --shadow-elegant: 0 10px 40px -10px hsl(220 13% 5% / 0.8);
+    /* Sidebar colors */
+    --sidebar-background: 240 10% 6%;
+    --sidebar-foreground: 240 5% 84%;
+    --sidebar-primary: 142 76% 36%;
+    --sidebar-primary-foreground: 355 100% 97%;
+    --sidebar-accent: 240 4.8% 8%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 142 76% 36%;
+
+    /* Minimal shadows */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
 
     /* Animation variables */
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-smooth: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
 
@@ -71,6 +74,22 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans antialiased;
   }
+
+  .accent-orange { @apply text-orange-500; }
+  .accent-blue { @apply text-blue-500; }
+  .accent-purple { @apply text-purple-500; }
+  .accent-pink { @apply text-pink-500; }
+  .accent-yellow { @apply text-yellow-500; }
+  .accent-emerald { @apply text-emerald-500; }
+  .accent-cyan { @apply text-cyan-500; }
+
+  .bg-accent-orange { @apply bg-orange-500; }
+  .bg-accent-blue { @apply bg-blue-500; }
+  .bg-accent-purple { @apply bg-purple-500; }
+  .bg-accent-pink { @apply bg-pink-500; }
+  .bg-accent-yellow { @apply bg-yellow-500; }
+  .bg-accent-emerald { @apply bg-emerald-500; }
+  .bg-accent-cyan { @apply bg-cyan-500; }
 }

@@ -2,8 +2,21 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Sidebar, SidebarContent, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { Package, DollarSign, Settings, User, Clock, Shield, AlertTriangle } from "lucide-react";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
+import {
+  Package,
+  DollarSign,
+  Settings,
+  User,
+  Clock,
+  Shield,
+  AlertTriangle,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 import { updateProductStatus, fetchProducts } from "@/lib/productApi";
@@ -21,86 +34,86 @@ interface Product {
 const Application = () => {
   const navigate = useNavigate();
   const [userEmail, setUserEmail] = useState("");
-
-  useEffect(() => {
-    fetch("http://localhost:5000/auth/user", { credentials: "include" })
-      .then(res => res.json())
-      .then(data => {
-        if (data && data.email) setUserEmail(data.email);
-      });
-  }, []);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Authentication check on mount
   useEffect(() => {
     fetch("http://localhost:5000/auth/user", { credentials: "include" })
-      .then(res => {
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && data.email) setUserEmail(data.email);
+      });
+  }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/auth/user", { credentials: "include" })
+      .then((res) => {
         if (!res.ok) {
           navigate("/");
           return;
         }
         return res.json();
       })
-      .then(data => {
+      .then((data) => {
         if (!data || !data.email) {
           navigate("/");
         }
       });
   }, [navigate]);
 
-  // Fetch products from backend file
   useEffect(() => {
     fetchProducts()
-      .then(data => {
-        setProducts(data.products.filter((p: Product) => p.status === 'resell_candidate'));
+      .then((data) => {
+        setProducts(
+          data.products.filter((p: Product) => p.status === "resell_candidate")
+        );
         setLoading(false);
       })
       .catch(() => setLoading(false));
   }, []);
 
-  // Status click logic
   const handleStatusClick = async (product: Product) => {
-    let newStatus = '';
-    if (product.status === 'uncertain') newStatus = 'dont_sell';
-    else if (product.status === 'dont_sell') newStatus = 'resell_candidate';
-    else if (product.status === 'resell_candidate') newStatus = 'dont_sell';
+    let newStatus = "";
+    if (product.status === "uncertain") newStatus = "dont_sell";
+    else if (product.status === "dont_sell") newStatus = "resell_candidate";
+    else if (product.status === "resell_candidate") newStatus = "dont_sell";
     else return;
+
     try {
       await updateProductStatus(product.id, newStatus);
-      // Refetch products after update
-      fetchProducts()
-        .then(data => {
-          setProducts(data.products.filter((p: Product) => p.status === 'resell_candidate'));
-        });
+      fetchProducts().then((data) => {
+        setProducts(
+          data.products.filter((p: Product) => p.status === "resell_candidate")
+        );
+      });
     } catch (e) {
-      alert('Failed to update status');
+      alert("Failed to update status");
     }
   };
 
   const truncateItemName = (itemname: string) => {
-    const words = itemname.split(' ');
-    return words.slice(0, 5).join(' ');
+    const words = itemname.split(" ");
+    return words.slice(0, 5).join(" ");
   };
 
   const getStatusVariant = (status: string) => {
     switch (status) {
-      case 'resell_candidate':
-        return 'destructive';
-      case 'uncertain':
-        return 'secondary';
+      case "resell_candidate":
+        return "destructive";
+      case "uncertain":
+        return "secondary";
       default:
-        return 'default';
+        return "default";
     }
   };
 
   const getConfidenceIcon = (confidence: string) => {
     switch (confidence) {
-      case 'high':
+      case "high":
         return <Shield className="w-4 h-4 text-green-500" />;
-      case 'medium':
+      case "medium":
         return <AlertTriangle className="w-4 h-4 text-yellow-500" />;
-      case 'low':
+      case "low":
         return <AlertTriangle className="w-4 h-4 text-red-500" />;
       default:
         return <AlertTriangle className="w-4 h-4 text-gray-500" />;
@@ -109,40 +122,46 @@ const Application = () => {
 
   return (
     <SidebarProvider>
-      <div className="min-h-screen bg-background flex">
+      <div className="min-h-screen w-screen bg-background flex">
         {/* Sidebar */}
         <Sidebar className="border-r border-sidebar-border bg-sidebar">
-          <SidebarContent className="p-6">
-            <div className="space-y-8">
+          <SidebarContent className="p-4">
+            <div className="space-y-6">
               {/* User profile */}
               <div className="text-center">
-                <div className="w-12 h-12 bg-sidebar-primary rounded-full flex items-center justify-center mx-auto mb-4">
-                  <User className="w-6 h-6 text-sidebar-primary-foreground" />
+                <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center mx-auto mb-3 transition-transform hover:scale-105">
+                  <User className="w-6 h-6 text-primary-foreground" />
                 </div>
-                <p className="text-sidebar-foreground text-sm">{userEmail}</p>
+                <p className="text-sidebar-foreground text-sm font-medium truncate">
+                  {userEmail}
+                </p>
               </div>
 
               {/* Navigation */}
               <nav className="space-y-2">
-                <div className="flex items-center space-x-3 p-3 rounded-lg bg-sidebar-accent text-sidebar-accent-foreground">
+                <div className="flex items-center space-x-3 p-3 rounded-lg bg-primary text-primary-foreground">
                   <Package className="w-5 h-5" />
                   <span className="font-medium">Unused Items</span>
                 </div>
-                
-                <div 
-                  className="flex items-center space-x-3 p-3 rounded-lg hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors cursor-pointer"
-                  onClick={() => navigate('/resale')}
+
+                <div
+                  className="flex items-center space-x-3 p-3 rounded-lg hover:bg-sidebar-accent transition-colors cursor-pointer group"
+                  onClick={() => navigate("/resale")}
                 >
-                  <DollarSign className="w-5 h-5" />
-                  <span>ReSale Value</span>
+                  <DollarSign className="w-5 h-5 text-emerald group-hover:text-primary transition-colors" />
+                  <span className="text-sidebar-foreground group-hover:text-sidebar-accent-foreground">
+                    ReSale Value
+                  </span>
                 </div>
-                
-                <div 
-                  className="flex items-center space-x-3 p-3 rounded-lg hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors cursor-pointer"
-                  onClick={() => navigate('/settings')}
+
+                <div
+                  className="flex items-center space-x-3 p-3 rounded-lg hover:bg-sidebar-accent transition-colors cursor-pointer group"
+                  onClick={() => navigate("/settings")}
                 >
-                  <Settings className="w-5 h-5" />
-                  <span>Settings</span>
+                  <Settings className="w-5 h-5 text-purple group-hover:text-primary transition-colors" />
+                  <span className="text-sidebar-foreground group-hover:text-sidebar-accent-foreground">
+                    Settings
+                  </span>
                 </div>
               </nav>
             </div>
@@ -150,85 +169,113 @@ const Application = () => {
         </Sidebar>
 
         {/* Main content */}
-        <div className="flex-1 flex flex-col">
-          {/* Header */}
-          <header className="sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur-sm p-4 sm:p-6 flex items-center justify-between">
+        <div className="flex flex-col min-h-0 flex-1 w-[calc(100%-16rem)]">
+
+          <header className="w-full sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-sm p-4 flex items-center justify-between flex-shrink-0">
             <div className="flex items-center space-x-4">
               <SidebarTrigger />
-              <h1 className="text-lg sm:text-2xl font-bold text-foreground">RePrice • Unused Items</h1>
+              <div>
+                <h1 className="text-xl font-semibold text-foreground">
+                  Unused Items
+                </h1>
+                <p className="text-sm text-muted-foreground">
+                  {products.length} items need your attention
+                </p>
+              </div>
             </div>
-            
-            <div className="flex items-center space-x-2 sm:space-x-4">
-              <div className="hidden sm:block text-sm text-muted-foreground">
-                {products.length} items detected
-              </div>
-              <Button onClick={async () => {
-                await fetch("http://localhost:5000/auth/logout", {
-                  method: "POST",
-                  credentials: "include"
-                });
-                navigate("/");
-              }}>Logout</Button>
-              <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                <User className="w-4 h-4 text-primary-foreground" />
-              </div>
+
+            <div className="flex items-center space-x-4">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={async () => {
+                  await fetch("http://localhost:5000/auth/logout", {
+                    method: "POST",
+                    credentials: "include",
+                  });
+                  navigate("/");
+                }}
+              >
+                Logout
+              </Button>
             </div>
           </header>
 
           {/* Items grid */}
-          <main className="flex-1 p-4 sm:p-8 bg-gradient-subtle w-full">
-            <div className="mb-8">
-              <h2 className="text-3xl font-bold text-foreground mb-2">Uncertain Items</h2>
-              <p className="text-muted-foreground">Items that need your attention</p>
-            </div>
+          <main className="flex-1 p-6 min-h-0 overflow-auto w-full">
+            {loading ? (
+              <div className="flex items-center justify-center h-64">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+              </div>
+            ) : products.length === 0 ? (
+              <div className="flex flex-col items-center justify-center w-full h-full text-center">
+                <Package className="w-12 h-12 text-muted-foreground/30 mb-4" />
+                <h3 className="text-lg font-medium text-muted-foreground mb-2">
+                  No items to display
+                </h3>
+                <p className="text-muted-foreground max-w-md text-sm">
+                  Your unused items will appear here once our system analyzes
+                  your data.
+                </p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full">
+                {products.map((product) => (
+                  <Card
+                    key={product.id}
+                    className="group hover:shadow-md transition-all duration-200 border-border/50 max-w-[320px] mx-auto"
+                  >
+                    {/* Card Header */}
+                    <div className="p-4 pb-3">
+                      <div className="flex items-start justify-between mb-3">
+                        <h3 className="font-semibold text-foreground text-lg leading-tight">
+                          {truncateItemName(product.itemname)}
+                        </h3>
+                        <Badge
+                          variant={getStatusVariant(product.status)}
+                          className="ml-2 shrink-0 cursor-pointer hover:scale-105 transition-transform"
+                          onClick={() => handleStatusClick(product)}
+                          title="Click to change status"
+                        >
+                          {product.status === "resell_candidate"
+                            ? "resell"
+                            : product.status.replace("_", " ")}
+                        </Badge>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
+                        <Clock className="w-4 h-4 text-cyan" />
+                        <span>
+                          Purchased{" "}
+                          {new Date(product.purchase_date).toLocaleDateString()}
+                        </span>
+                      </div>
+                    </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-              {loading ? <div>Loading...</div> : products.map((product, index) => (
-                <Card key={product.id} className="group relative overflow-hidden bg-gradient-card border border-border/50 shadow-elegant hover:shadow-glow transition-all duration-500 hover:scale-[1.02] animate-slide-up" style={{animationDelay: `${index * 100}ms`}}>
-                  {/* Card Header */}
-                  <div className="p-6 pb-4">
-                    <div className="flex items-start justify-between mb-4">
-                      <h3 className="font-bold text-foreground text-xl leading-tight">
-                        {truncateItemName(product.itemname)}
-                      </h3>
-                      <Badge 
-                        variant={getStatusVariant(product.status)} 
-                        className="ml-2 shrink-0 cursor-pointer"
-                        onClick={() => handleStatusClick(product)}
-                        title="Click to change status"
-                      >
-                        {product.status.replace('_', ' ')}
-                      </Badge>
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-                      <Clock className="w-4 h-4" />
-                      <span>Purchased on {new Date(product.purchase_date).toLocaleDateString()}</span>
-                    </div>
-                  </div>
-                  {/* Price Section */}
-                  <div className="px-6 pb-6">
-                    <div className="bg-muted/30 rounded-xl p-4 mb-4">
-                      <div className="grid grid-cols-1 gap-4">
-                        <div>
-                          <p className="text-xs text-muted-foreground uppercase tracking-wide mb-1">Purchase Price</p>
-                          <p className="text-lg font-bold text-foreground">₹{product.purchase_price.toLocaleString()}</p>
+                    {/* Price Section */}
+                    <div className="px-4 pb-4">
+                      <div className="bg-muted/30 rounded-lg p-3 mb-3 space-y-2">
+                        <div className="flex justify-between items-center">
+                          <span className="text-xs text-muted-foreground uppercase tracking-wide">
+                            Purchase Price
+                          </span>
+                          <span className="text-lg font-bold text-foreground">
+                            ₹{product.purchase_price.toLocaleString()}
+                          </span>
                         </div>
-                        <div>
-                          <p className="text-xs text-muted-foreground uppercase tracking-wide mb-1">Current Range</p>
-                          <p className="text-lg font-bold text-foreground">{product.price_range}</p>
+                        <div className="flex justify-between items-center">
+                          <span className="text-xs text-muted-foreground uppercase tracking-wide">
+                            Current Range
+                          </span>
+                          <span className="text-sm font-semibold text-orange">
+                            {product.price_range}
+                          </span>
                         </div>
                       </div>
                     </div>
-                    {/* Action Button */}
-                    <Button 
-                      className="w-full bg-gradient-primary hover:opacity-90 text-white font-semibold rounded-xl h-11 transition-all duration-300 hover:shadow-glow group-hover:scale-[1.02]"
-                    >
-                      List for Resale
-                    </Button>
-                  </div>
-                </Card>
-              ))}
-            </div>
+                  </Card>
+                ))}
+              </div>
+            )}
           </main>
         </div>
       </div>

@@ -109,37 +109,37 @@ const ReSale = () => {
       <div className="min-h-screen bg-background flex">
         {/* Sidebar */}
         <Sidebar className="border-r border-sidebar-border bg-sidebar">
-          <SidebarContent className="p-6">
-            <div className="space-y-8">
+          <SidebarContent className="p-4">
+            <div className="space-y-6">
               {/* User profile */}
               <div className="text-center">
-                <div className="w-12 h-12 bg-sidebar-primary rounded-full flex items-center justify-center mx-auto mb-4">
-                  <User className="w-6 h-6 text-sidebar-primary-foreground" />
+                <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center mx-auto mb-3 transition-transform hover:scale-105">
+                  <User className="w-6 h-6 text-primary-foreground" />
                 </div>
-                <p className="text-sidebar-foreground text-sm">{userEmail}</p>
+                <p className="text-sidebar-foreground text-sm font-medium truncate">{userEmail}</p>
               </div>
 
               {/* Navigation */}
               <nav className="space-y-2">
                 <div 
-                  className="flex items-center space-x-3 p-3 rounded-lg hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors cursor-pointer"
+                  className="flex items-center space-x-3 p-3 rounded-lg hover:bg-sidebar-accent transition-colors cursor-pointer group"
                   onClick={() => navigate('/application')}
                 >
-                  <Package className="w-5 h-5" />
-                  <span>Unused Items</span>
+                  <Package className="w-5 h-5 text-blue group-hover:text-primary transition-colors" />
+                  <span className="text-sidebar-foreground group-hover:text-sidebar-accent-foreground">Unused Items</span>
                 </div>
                 
-                <div className="flex items-center space-x-3 p-3 rounded-lg bg-sidebar-accent text-sidebar-accent-foreground">
+                <div className="flex items-center space-x-3 p-3 rounded-lg bg-primary text-primary-foreground">
                   <DollarSign className="w-5 h-5" />
                   <span className="font-medium">ReSale Value</span>
                 </div>
                 
                 <div 
-                  className="flex items-center space-x-3 p-3 rounded-lg hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors cursor-pointer"
+                  className="flex items-center space-x-3 p-3 rounded-lg hover:bg-sidebar-accent transition-colors cursor-pointer group"
                   onClick={() => navigate('/settings')}
                 >
-                  <Settings className="w-5 h-5" />
-                  <span>Settings</span>
+                  <Settings className="w-5 h-5 text-purple group-hover:text-primary transition-colors" />
+                  <span className="text-sidebar-foreground group-hover:text-sidebar-accent-foreground">Settings</span>
                 </div>
               </nav>
             </div>
@@ -149,83 +149,87 @@ const ReSale = () => {
         {/* Main content */}
         <div className="flex-1 flex flex-col">
           {/* Header */}
-          <header className="sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur-sm p-4 sm:p-6 flex items-center justify-between">
+          <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-sm p-4 flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <SidebarTrigger />
-              <h1 className="text-lg sm:text-2xl font-bold text-foreground">RePrice • ReSale Value</h1>
+              <div>
+                <h1 className="text-xl font-semibold text-foreground">ReSale Value</h1>
+                <p className="text-sm text-muted-foreground">{products.length} total items tracked</p>
+              </div>
             </div>
             
-            <div className="flex items-center space-x-2 sm:space-x-4">
-              <div className="hidden sm:block text-sm text-muted-foreground">
-                {products.length} total items
-              </div>
-              <Button onClick={async () => {
-                await fetch("http://localhost:5000/auth/logout", {
-                  method: "POST",
-                  credentials: "include"
-                });
-                navigate("/");
-              }}>Logout</Button>
-              <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                <User className="w-4 h-4 text-primary-foreground" />
-              </div>
+            <div className="flex items-center space-x-4">
+              <Button 
+                variant="outline"
+                size="sm"
+                onClick={async () => {
+                  await fetch("http://localhost:5000/auth/logout", {
+                    method: "POST",
+                    credentials: "include"
+                  });
+                  navigate("/");
+                }}
+              >
+                Logout
+              </Button>
             </div>
           </header>
 
           {/* Items grid */}
-          <main className="flex-1 p-4 sm:p-8 bg-gradient-subtle w-full">
-            <div className="mb-8">
-              <h2 className="text-3xl font-bold text-foreground mb-2">All Items</h2>
-              <p className="text-muted-foreground">Track resale value for all your items</p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-              {loading ? <div>Loading...</div> : products.map((product, index) => (
-                <Card key={product.id} className="group relative overflow-hidden bg-gradient-card border border-border/50 shadow-elegant hover:shadow-glow transition-all duration-500 hover:scale-[1.02] animate-slide-up" style={{animationDelay: `${index * 100}ms`}}>
+          <main className="flex-1 p-6">
+            {loading ? (
+              <div className="flex items-center justify-center h-64">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {products.map((product) => (
+                <Card 
+                  key={product.id} 
+                  className="group hover:shadow-md transition-all duration-200 border-border/50"
+                >
                   {/* Card Header */}
-                  <div className="p-6 pb-4">
-                    <div className="flex items-start justify-between mb-4">
-                      <h3 className="font-bold text-foreground text-xl leading-tight">
+                  <div className="p-4 pb-3">
+                    <div className="flex items-start justify-between mb-3">
+                      <h3 className="font-semibold text-foreground text-lg leading-tight">
                         {truncateItemName(product.itemname)}
                       </h3>
-                      <Badge 
-                        variant={getStatusVariant(product.status)} 
-                        className="ml-2 shrink-0 cursor-pointer"
-                        onClick={() => handleStatusClick(product)}
-                        title="Click to change status"
-                      >
-                        {product.status.replace('_', ' ')}
-                      </Badge>
+                      <Badge
+            variant={getStatusVariant(product.status)}
+            className="ml-2 shrink-0 cursor-pointer hover:scale-105 transition-transform"
+            onClick={() => handleStatusClick(product)}
+            title="Click to change status"
+          >
+            {/* Show 'resell' instead of 'resell_candidate' */}
+            {product.status === 'resell_candidate' ? 'resell' : product.status.replace('_', ' ')}
+          </Badge>
+
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-                      <Clock className="w-4 h-4" />
-                      <span>Purchased on {new Date(product.purchase_date).toLocaleDateString()}</span>
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
+                      <Clock className="w-4 h-4 text-cyan" />
+                      <span>Purchased {new Date(product.purchase_date).toLocaleDateString()}</span>
                     </div>
                   </div>
+                  
                   {/* Price Section */}
-                  <div className="px-6 pb-6">
-                    <div className="bg-muted/30 rounded-xl p-4 mb-4">
-                      <div className="grid grid-cols-1 gap-4">
-                        <div>
-                          <p className="text-xs text-muted-foreground uppercase tracking-wide mb-1">Purchase Price</p>
-                          <p className="text-lg font-bold text-foreground">₹{product.purchase_price.toLocaleString()}</p>
-                        </div>
-                        <div>
-                          <p className="text-xs text-muted-foreground uppercase tracking-wide mb-1">Current Range</p>
-                          <p className="text-lg font-bold text-foreground">{product.price_range}</p>
-                        </div>
+                  <div className="px-4 pb-4">
+                    <div className="bg-muted/30 rounded-lg p-3 mb-3 space-y-2">
+                      <div className="flex justify-between items-center">
+                        <span className="text-xs text-muted-foreground uppercase tracking-wide">Purchase Price</span>
+                        <span className="text-lg font-bold text-foreground">₹{product.purchase_price.toLocaleString()}</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-xs text-muted-foreground uppercase tracking-wide">Current Range</span>
+                        <span className="text-sm font-semibold text-orange">{product.price_range}</span>
                       </div>
                     </div>
-                    {/* Action Button */}
-                    <Button 
-                      className="w-full bg-gradient-primary hover:opacity-90 text-white font-semibold rounded-xl h-11 transition-all duration-300 hover:shadow-glow group-hover:scale-[1.02]"
-                    >
-                      List for Resale
-                    </Button>
+                    
+                    
                   </div>
                 </Card>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </main>
         </div>
       </div>

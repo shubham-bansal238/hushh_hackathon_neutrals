@@ -61,18 +61,22 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				orange: 'hsl(var(--orange))',
+				blue: 'hsl(var(--blue))',
+				purple: 'hsl(var(--purple))',
+				pink: 'hsl(var(--pink))',
+				yellow: 'hsl(var(--yellow))',
+				emerald: 'hsl(var(--emerald))',
+				cyan: 'hsl(var(--cyan))'
 			},
-			backgroundImage: {
-				'gradient-primary': 'var(--gradient-primary)',
-				'gradient-background': 'var(--gradient-background)',
-				'gradient-card': 'var(--gradient-card)',
-				'gradient-subtle': 'var(--gradient-subtle)'
+			fontFamily: {
+				sans: ['Inter', 'system-ui', 'sans-serif'],
 			},
 			boxShadow: {
-				'glow': 'var(--shadow-glow)',
-				'card': 'var(--shadow-card)',
-				'elegant': 'var(--shadow-elegant)'
+				'sm': 'var(--shadow-sm)',
+				'md': 'var(--shadow-md)',
+				'lg': 'var(--shadow-lg)'
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
