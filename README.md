@@ -70,9 +70,52 @@ This project integrates the **Hushh MCP Protocol** for:
 👉 With this, your gadgets stop being “forgotten junk” and start becoming **hidden cash you can unlock anytime**.
 
 ---
+
+## Diagram of the project
+
+![My Image](project_flow.jpg)
+
+### Few pictures
+![alt text](submissions/image.png)
+![alt text](submissions/image-1.png)
+![alt text](submissions/image-2.png)
+![alt text](submissions/image-3.png)
+![alt text](submissions/image-4.png)
+![alt text](submissions/image-5.png)
+
+
+## Agent names functionality
+```
+├── hushh_mcp/                  
+│   ├── agents/                 # AI agents
+│   │   ├── aggregator_agent.py         # Consolidates all the data from the available json files
+│   │   ├── calender_reader_agent.py    # Gets data from google calendar and saves it in the calendar_lastseen.json
+│   │   ├── context_agent.py            # Generates context for each products
+│   │   ├── cost_agent.py               # Tells resale value of each product
+│   │   ├── gmail_reader_agent.py       # Reads gmail and extracts relevant emails
+│   │   ├── receipt_agent.py            # Extracts relevant data from relevant emails
+│   │   └── usage_agent.py              # Decides whether the product is resell candidate|dont sell|uncertain
+│   │
+│   ├── jsons/                 # JSON outputs (data storage)
+│   └── vault/                  # Vault
+│       ├── encrypt.py
+│       └── json_vault.py       # contains functions which is used to make encryption vault
+│
+├── tests/                      # Unit tests
+│   ├── test_agents.py
+│   ├── test_aggregator_agent.py
+│   ├── test_calender_reader_agent.py
+│   ├── test_context_agent.py
+│   ├── test_cost_agent.py
+│   ├── test_gmail_reader_agent.py
+│   ├── test_receipt_agent.py
+│   ├── test_usage_agent.py
+│   └── test_vault.py
+```
+
 ## How to run this project
 
-## Setup the ENV variables (imp)
+### Setup the ENV variables (imp)
 ```
 # Server port (optional if not running web server)
 PORT=3000
@@ -124,43 +167,4 @@ To run the chrome extension
 - click on the extension and click ```start monitoring```
 - Thats it!
 
-## Agent names functionality
-```
-├── hushh_mcp/                  
-│   ├── agents/                 # AI agents
-│   │   ├── aggregator_agent.py         # Consolidates all the data from the available json files
-│   │   ├── calender_reader_agent.py    # Gets data from google calendar and saves it in the calendar_lastseen.json
-│   │   ├── context_agent.py            # Generates context for each products
-│   │   ├── cost_agent.py               # Tells resale value of each product
-│   │   ├── gmail_reader_agent.py       # Reads gmail and extracts relevant emails
-│   │   ├── receipt_agent.py            # Extracts relevant data from relevant emails
-│   │   └── usage_agent.py              # Decides whether the product is resell candidate|dont sell|uncertain
-│   │
-│   ├── jsons/                 # JSON outputs (data storage)
-│   └── vault/                  # Vault
-│       ├── encrypt.py
-│       └── json_vault.py       # contains functions which is used to make encryption vault
-│
-├── tests/                      # Unit tests
-│   ├── test_agents.py
-│   ├── test_aggregator_agent.py
-│   ├── test_calender_reader_agent.py
-│   ├── test_context_agent.py
-│   ├── test_cost_agent.py
-│   ├── test_gmail_reader_agent.py
-│   ├── test_receipt_agent.py
-│   ├── test_usage_agent.py
-│   └── test_vault.py
-```
 
-## This is the flow of my project and it is explained in the video
-
-![My Image](project_flow.jpg)
-
-### Few pictures
-![alt text](submissions/image.png)
-![alt text](submissions/image-1.png)
-![alt text](submissions/image-2.png)
-![alt text](submissions/image-3.png)
-![alt text](submissions/image-4.png)
-![alt text](submissions/image-5.png)
