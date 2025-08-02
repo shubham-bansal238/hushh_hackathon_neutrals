@@ -178,14 +178,14 @@ const Settings = () => {
                       icon: <Globe className="w-5 h-5 text-blue" />,
                       id: "browser-history",
                       label: "Browser History Access",
-                      description: "Track product research and shopping patterns",
+                      description: "Track Chrome Browser history for better recommendations",
                       stateKey: "browserHistory",
                     },
                     {
                       icon: <FileText className="w-5 h-5 text-emerald" />,
                       id: "calendar-access",
                       label: "Calendar Integration",
-                      description: "Detect purchase dates from calendar events",
+                      description: "Detects calendar events for usage tracking",
                       stateKey: "calendarAccess",
                     },
                     {
@@ -199,7 +199,7 @@ const Settings = () => {
                       icon: <Smartphone className="w-5 h-5 text-orange" />,
                       id: "device-info",
                       label: "Device Information",
-                      description: "Access device specs for accurate pricing",
+                      description: "Access device information for accurate usage tracking",
                       stateKey: "deviceInfo",
                     },
                   ].map(({ icon, id, label, description, stateKey }) => (

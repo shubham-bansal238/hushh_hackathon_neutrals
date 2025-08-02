@@ -13,6 +13,5 @@ python-dotenv
 argparse
 pytest
 tqdm
-unittest
 wmi
 pywin32

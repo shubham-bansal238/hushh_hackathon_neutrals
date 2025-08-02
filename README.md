@@ -74,19 +74,50 @@ This project integrates the **Hushh MCP Protocol** for:
 ---
 ## How to run this project
 
+## Setup the ENV variables (imp)
+```
+# Server port (optional if not running web server)
+PORT=3000
+
+# 🔐 HMAC signing key (64-character hex, 256-bit)
+SECRET_KEY=your_64_char_hex_here
+
+# 🔒 Vault AES encryption key (64-character hex, 256-bit)
+VAULT_ENCRYPTION_KEY=your_64_char_hex_here
+
+# ⏱️ Expiration durations (milliseconds)
+DEFAULT_CONSENT_TOKEN_EXPIRY_MS=604800000
+DEFAULT_TRUST_LINK_EXPIRY_MS=2592000000
+
+# 🌱 App context
+ENVIRONMENT=development
+AGENT_ID=agent_hushh_local
+HUSHH_HACKATHON=enabled
+
+GROQ_API_KEY=your_key
+GEMINI_API_KEY=your_key
+
+OAUTHLIB_INSECURE_TRANSPORT=1
+
+FLASK_SECRET_KEY=your_64_char_hex_here
+```
+
+To run frontend
+
 ```
 cd frontend
 npm install
 npm run dev
 ```
-the above snippet is for frontend
+
+To run the flask server
 
 ```
+pip install -r requirements.txt
 python -m hushh_mcp.server
 ```
-to run the server
 
-Now to run the chrome extension
+To run the chrome extension
 
 - Open ```chrome://extensions/```
 - Turn on developer mode
@@ -95,41 +126,22 @@ Now to run the chrome extension
 - click on the extension and click ```start monitoring```
 - Thats it!
 
-NOTE: DONT FORGET TO INSTALL DEPENDENCIES FROM ```requirements.txt``` for agents
-
-## This is the flow of my project and it is explained in the video
-
-![My Image](project_flow.jpg)
-
----
-## Project directory
+## Agent names functionality
 ```
-project-root/
-│
-├── frontend/                   # Frontend (React + Vite + Tailwind)
-│   └── src/                    # Source code
-│       └── pages/              # Page components
-│           ├── Application.tsx
-│           ├── Index.tsx
-│           ├── Landing.tsx
-│           ├── NotFound.tsx
-│           ├── ReSale.tsx
-│           └── Settings.tsx
-│
-├── hushh_mcp/                  # Backend core
+├── hushh_mcp/                  
 │   ├── agents/                 # AI agents
-│   │   ├── aggregator_agent.py
-│   │   ├── calender_reader_agent.py
-│   │   ├── context_agent.py
-│   │   ├── cost_agent.py
-│   │   ├── gmail_reader_agent.py
-│   │   ├── receipt_agent.py
-│   │   └── usage_agent.py
+│   │   ├── aggregator_agent.py         # Consolidates all the data from the available json files
+│   │   ├── calender_reader_agent.py    # Gets data from google calendar and saves it in the calendar_lastseen.json
+│   │   ├── context_agent.py            # Generates context for each products
+│   │   ├── cost_agent.py               # Tells resale value of each product
+│   │   ├── gmail_reader_agent.py       # Reads gmail and extracts relevant emails
+│   │   ├── receipt_agent.py            # Extracts relevant data from relevant emails
+│   │   └── usage_agent.py              # Decides whether the product is resell candidate|dont sell|uncertain
 │   │
-│   ├── jsons/                  # JSON outputs (data storage)
-│   └── vault/                  # Encryption + secure storage
+│   ├── jsons/                 # JSON outputs (data storage)
+│   └── vault/                  # Vault
 │       ├── encrypt.py
-│       └── json_vault.py
+│       └── json_vault.py       # contains functions which is used to make encryption vault
 │
 ├── tests/                      # Unit tests
 │   ├── test_agents.py
@@ -141,14 +153,16 @@ project-root/
 │   ├── test_receipt_agent.py
 │   ├── test_usage_agent.py
 │   └── test_vault.py
-│
-├── .env                        # Environment variables
-├── .env.example                # Example env file
-├── .gitignore                  # Git ignore rules
-├── consent_token.json          # Consent token
-├── project_flow.jpg            # Flow diagram
-├── README.md                   # Documentation
-├── requirements.txt            # Python dependencies
-├── test.py                     # Test runner
-└── token.json                  # API/Auth token
 ```
+
+## This is the flow of my project and it is explained in the video
+
+![My Image](project_flow.jpg)
+
+### Few pictures
+![alt text](submissions/image.png)
+![alt text](submissions/image-1.png)
+![alt text](submissions/image-2.png)
+![alt text](submissions/image-3.png)
+![alt text](submissions/image-4.png)
+![alt text](submissions/image-5.png)

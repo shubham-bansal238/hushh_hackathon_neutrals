@@ -65,15 +65,21 @@ const Application = () => {
   useEffect(() => {
     fetchProducts()
       .then((data) => {
-        const filtered = data.products.filter((p: Product) => p.status === "resell_candidate");
+        const filtered = data.products.filter(
+          (p: Product) => p.status === "resell_candidate"
+        );
         setProducts(filtered);
         // Log reasoning for each product
         filtered.forEach((product) => {
           const itemname = product.itemname || "";
           if (product.reasoning) {
-            console.log(`Product ID ${product.id} | Item: ${itemname} | Reasoning: ${product.reasoning}`);
+            console.log(
+              `Product ID ${product.id} | Item: ${itemname} | Reasoning: ${product.reasoning}`
+            );
           } else {
-            console.log(`Product ID ${product.id} | Item: ${itemname} | No reasoning.`);
+            console.log(
+              `Product ID ${product.id} | Item: ${itemname} | No reasoning.`
+            );
           }
         });
         setLoading(false);
@@ -149,7 +155,6 @@ const Application = () => {
               {/* Navigation */}
               <nav className="space-y-2">
                 <div className="flex items-center space-x-3 p-3 rounded-lg bg-primary text-primary-foreground">
-                  
                   <DollarSign className="w-5 h-5" />
                   <span className="font-medium">Resalable items</span>
                 </div>
@@ -180,7 +185,6 @@ const Application = () => {
 
         {/* Main content */}
         <div className="flex flex-col min-h-0 flex-1 w-[calc(100%-16rem)]">
-
           <header className="w-full sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-sm p-4 flex items-center justify-between flex-shrink-0">
             <div className="flex items-center space-x-4">
               <SidebarTrigger />
@@ -249,6 +253,10 @@ const Application = () => {
                         >
                           {product.status === "resell_candidate"
                             ? "Resell"
+                            : product.status === "dont_sell"
+                            ? "Hold"
+                            : product.status === "uncertain"
+                            ? "Uncertain"
                             : product.status.replace("_", " ")}
                         </Badge>
                       </div>
@@ -283,7 +291,8 @@ const Application = () => {
                         {/* Reasoning text */}
                         {product.reasoning && (
                           <div className="mt-2 text-xs text-muted-foreground">
-                            <span className="font-semibold">Reasoning: </span>{product.reasoning}
+                            <span className="font-semibold">Reasoning: </span>
+                            {product.reasoning}
                           </div>
                         )}
                       </div>
