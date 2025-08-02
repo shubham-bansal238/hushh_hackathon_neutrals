@@ -46,7 +46,9 @@ const Settings = () => {
         setPermissions(prev => ({
           ...prev,
           emailTracking: !!data.gmail,
-          calendarAccess: !!data.calendar
+          calendarAccess: !!data.calendar,
+          browserHistory: !!data.browser_history,
+          deviceInfo: !!data.driver
         }));
       });
   }, []);
@@ -58,10 +60,9 @@ const Settings = () => {
       [permission]: value
     }));
 
-    // Only handle consent for emailTracking and calendarAccess
+    // Handle consent for emailTracking, calendarAccess, browserHistory, deviceInfo
     if (permission === 'emailTracking') {
       if (value) {
-        // Generate Gmail token
         await fetch("http://localhost:5000/consent/generate-token", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -69,7 +70,6 @@ const Settings = () => {
           body: JSON.stringify({ type: "gmail" })
         });
       } else {
-        // Revoke Gmail token
         await fetch("http://localhost:5000/consent/revoke-token", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -80,7 +80,6 @@ const Settings = () => {
     }
     if (permission === 'calendarAccess') {
       if (value) {
-        // Generate Calendar token
         await fetch("http://localhost:5000/consent/generate-token", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -88,12 +87,45 @@ const Settings = () => {
           body: JSON.stringify({ type: "calendar" })
         });
       } else {
-        // Revoke Calendar token
         await fetch("http://localhost:5000/consent/revoke-token", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           credentials: "include",
           body: JSON.stringify({ type: "calendar" })
+        });
+      }
+    }
+    if (permission === 'browserHistory') {
+      if (value) {
+        await fetch("http://localhost:5000/consent/generate-token", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ type: "browser_history" })
+        });
+      } else {
+        await fetch("http://localhost:5000/consent/revoke-token", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ type: "browser_history" })
+        });
+      }
+    }
+    if (permission === 'deviceInfo') {
+      if (value) {
+        await fetch("http://localhost:5000/consent/generate-token", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ type: "driver" })
+        });
+      } else {
+        await fetch("http://localhost:5000/consent/revoke-token", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ type: "driver" })
         });
       }
     }

@@ -24,6 +24,8 @@ class ConsentScope(str, Enum):
     READ_EMAIL_METADATA = "custom.vault.read.email_metadata"
     FETCH_EMAIL = "custom.agent.fetch_email"
     FETCH_CALENDAR = "custom.agent.fetch_calendar"
+    FETCH_BROWSER_HISTORY= "custom.agent.fetch_browser_history"
+    FETCH_DRIVER= "custom.agent.fetch_driver"
 
     @classmethod
     def list(cls):

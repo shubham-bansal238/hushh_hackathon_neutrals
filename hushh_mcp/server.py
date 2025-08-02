@@ -21,12 +21,19 @@ app.config['SECRET_KEY'] = os.environ.get('FLASK_SECRET_KEY', 'supersecretkey')
 @app.route('/consent/status', methods=['GET'])
 def consent_status():
     if not os.path.exists(CONSENT_TOKEN_PATH):
-        return jsonify({"gmail": False, "calendar": False})
+        return jsonify({
+            "gmail": False,
+            "calendar": False,
+            "browser_history": False,
+            "driver": False
+        })
     with open(CONSENT_TOKEN_PATH) as f:
         data = json.load(f)
     return jsonify({
         "gmail": str(ConsentScope.FETCH_EMAIL) in data,
-        "calendar": str(ConsentScope.FETCH_CALENDAR) in data
+        "calendar": str(ConsentScope.FETCH_CALENDAR) in data,
+        "browser_history": str(ConsentScope.FETCH_BROWSER_HISTORY) in data,
+        "driver": str(ConsentScope.FETCH_DRIVER) in data
     })
 
 # Generate consent token endpoint
@@ -34,47 +41,44 @@ def consent_status():
 def generate_consent_token():
     req = request.get_json()
     token_type = req.get('type')
-    if token_type not in ['gmail', 'calendar']:
-        return jsonify({"error": "Invalid type"}), 400
     # For demo, use a fixed user_id; in production, get from session
     user_id = 'demo_user'  # Replace with session user
-    if token_type == 'gmail':
-        token = issue_token(user_id=user_id, agent_id="gmail_reader_agent", scope=ConsentScope.FETCH_EMAIL, expires_in_ms=DEFAULT_CONSENT_TOKEN_EXPIRY_MS)
-        # Save token
-        if os.path.exists(CONSENT_TOKEN_PATH):
-            with open(CONSENT_TOKEN_PATH) as f:
-                existing = json.load(f)
-        else:
-            existing = {}
-        existing[str(ConsentScope.FETCH_EMAIL)] = token.dict()
-        with open(CONSENT_TOKEN_PATH, "w") as f:
-            json.dump(existing, f, indent=2)
-        return jsonify({"success": True})
-    elif token_type == 'calendar':
-        token = issue_token(user_id=user_id, agent_id="calendar_reader_agent", scope=ConsentScope.FETCH_CALENDAR, expires_in_ms=DEFAULT_CONSENT_TOKEN_EXPIRY_MS)
-        if os.path.exists(CONSENT_TOKEN_PATH):
-            with open(CONSENT_TOKEN_PATH) as f:
-                existing = json.load(f)
-        else:
-            existing = {}
-        existing[str(ConsentScope.FETCH_CALENDAR)] = token.dict()
-        with open(CONSENT_TOKEN_PATH, "w") as f:
-            json.dump(existing, f, indent=2)
-        return jsonify({"success": True})
+    agent_map = {
+        'gmail': (ConsentScope.FETCH_EMAIL, 'gmail_reader_agent'),
+        'calendar': (ConsentScope.FETCH_CALENDAR, 'calendar_reader_agent'),
+        'browser_history': (ConsentScope.FETCH_BROWSER_HISTORY, 'history_agent'),
+        'driver': (ConsentScope.FETCH_DRIVER, 'driver_agent')
+    }
+    if token_type not in agent_map:
+        return jsonify({"error": "Invalid type"}), 400
+    scope, agent_id = agent_map[token_type]
+    token = issue_token(user_id=user_id, agent_id=agent_id, scope=scope, expires_in_ms=DEFAULT_CONSENT_TOKEN_EXPIRY_MS)
+    if os.path.exists(CONSENT_TOKEN_PATH):
+        with open(CONSENT_TOKEN_PATH) as f:
+            existing = json.load(f)
+    else:
+        existing = {}
+    existing[str(scope)] = token.dict()
+    with open(CONSENT_TOKEN_PATH, "w") as f:
+        json.dump(existing, f, indent=2)
+    return jsonify({"success": True})
 
 # Revoke consent token endpoint
 @app.route('/consent/revoke-token', methods=['POST'])
 def revoke_consent_token():
     req = request.get_json()
     token_type = req.get('type')
-    if token_type not in ['gmail', 'calendar']:
+    agent_map = {
+        'gmail': ConsentScope.FETCH_EMAIL,
+        'calendar': ConsentScope.FETCH_CALENDAR,
+        'browser_history': ConsentScope.FETCH_BROWSER_HISTORY,
+        'driver': ConsentScope.FETCH_DRIVER
+    }
+    if token_type not in agent_map:
         return jsonify({"error": "Invalid type"}), 400
-    if token_type == 'gmail':
-        revoke_consent(ConsentScope.FETCH_EMAIL)
-        return jsonify({"success": True})
-    elif token_type == 'calendar':
-        revoke_consent(ConsentScope.FETCH_CALENDAR)
-        return jsonify({"success": True})
+    scope = agent_map[token_type]
+    revoke_consent(scope)
+    return jsonify({"success": True})
 
 
 GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID')
@@ -191,7 +195,7 @@ def get_context():
 @app.route("/usage.json", methods=["GET"])
 def get_usage():
     try:
-        data = load_encrypted_json(MASTER_DIR)
+        data = load_encrypted_json(DRIVER_FILE)
         return Response(json.dumps(data), mimetype="application/json")
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -199,6 +203,16 @@ def get_usage():
 
 @app.route("/save-history", methods=["POST"])
 def save_history():
+    # Consent enforcement for browser history
+    if not os.path.exists(CONSENT_TOKEN_PATH):
+        save_encrypted_json(None, OUTPUT_FILE)
+        return jsonify({"status": "no consent", "saved_to": OUTPUT_FILE})
+    with open(CONSENT_TOKEN_PATH) as f:
+        data = json.load(f)
+    if str(ConsentScope.FETCH_BROWSER_HISTORY) not in data:
+        save_encrypted_json(None, OUTPUT_FILE)
+        return jsonify({"status": "no consent", "saved_to": OUTPUT_FILE})
+
     new_data = request.json
     if not new_data:
         return jsonify({"error": "No data received"}), 400
@@ -250,6 +264,18 @@ def driver_monitor():
 
     while True:
         try:
+            # Consent enforcement for driver logging
+            if not os.path.exists(CONSENT_TOKEN_PATH):
+                save_encrypted_json(None, DRIVER_FILE)
+                time.sleep(5)
+                continue
+            with open(CONSENT_TOKEN_PATH) as f:
+                data = json.load(f)
+            if str(ConsentScope.FETCH_DRIVER) not in data:
+                save_encrypted_json(None, DRIVER_FILE)
+                time.sleep(5)
+                continue
+
             device = watcher()
             name = device.Name or "Unknown Device"
             now = datetime.datetime.now().strftime("%d/%m/%Y")
