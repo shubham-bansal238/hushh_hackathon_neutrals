@@ -1,6 +1,7 @@
 
 
-# 📦 Personal Economy Agent
+# 📦 Personal Economy Agent (RePrice)
+![tagline](submissions/tagline.png)
 
 ## 🚀 What is it?
 
@@ -26,7 +27,6 @@ This project automatically tracks your electronic purchases, checks whether they
 
   * **Calendar mentions** (e.g., meetings with "Zoom webcam" hint).
   * **Browser history** (e.g., searches like *“how to fix headphones not charging”* or *“buy new mouse”*).
-  * **Email mentions** (e.g., warranty or repair emails).
   * **Driver/Device metadata** (e.g., was this webcam connected to the system recently? Battery check for headphones?).
 * **Valuation Agent** → Estimates realistic resale prices based on category, age, and market trends in India.
 * **Resale Deals Dashboard** → A simple dashboard that shows all your gadgets with their current resale values.
@@ -43,7 +43,6 @@ This project automatically tracks your electronic purchases, checks whether they
    * Looks for related searches in **browser history**.
    * Checks **OS driver/device metadata** to see if the product was connected recently.
    * Scans **calendar events** for mentions of that device.
-   * Reads **emails** for repair/warranty/service activity.
      Together, these signals form a picture of whether the product is *active, inactive, or uncertain*.
 4. **Valuation Agent** calculates the resale value using depreciation logic + GPT reasoning.
 5. **Resale Deals Agent** compiles all active items with their updated resale values and shows them in the dashboard.
@@ -55,7 +54,6 @@ This project automatically tracks your electronic purchases, checks whether they
 This project integrates the **Hushh MCP Protocol** for:
 
 * **Consent Management** → User decides what data can be read.
-* **Trust Links** → Verified, auditable connections between agents.
 * **Vault Encryption** → All personal data stays private and encrypted.
 
 ---
