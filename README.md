@@ -79,7 +79,7 @@ This project integrates the **Hushh MCP Protocol** for:
 ![alt text](submissions/image.png)
 ![alt text](submissions/image-1.png)
 ![alt text](submissions/image-2.png)
-
+![alt text](submissions/image-3.png)
 ![alt text](submissions/image-4.png)
 ![alt text](submissions/image-5.png)
 
