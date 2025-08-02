@@ -102,3 +102,53 @@ NOTE: DONT FORGET TO INSTALL DEPENDENCIES FROM ```requirements.txt``` for agents
 ![My Image](project_flow.jpg)
 
 ---
+## Project directory
+```
+project-root/
+│
+├── frontend/                   # Frontend (React + Vite + Tailwind)
+│   └── src/                    # Source code
+│       └── pages/              # Page components
+│           ├── Application.tsx
+│           ├── Index.tsx
+│           ├── Landing.tsx
+│           ├── NotFound.tsx
+│           ├── ReSale.tsx
+│           └── Settings.tsx
+│
+├── hushh_mcp/                  # Backend core
+│   ├── agents/                 # AI agents
+│   │   ├── aggregator_agent.py
+│   │   ├── calender_reader_agent.py
+│   │   ├── context_agent.py
+│   │   ├── cost_agent.py
+│   │   ├── gmail_reader_agent.py
+│   │   ├── receipt_agent.py
+│   │   └── usage_agent.py
+│   │
+│   ├── jsons/                  # JSON outputs (data storage)
+│   └── vault/                  # Encryption + secure storage
+│       ├── encrypt.py
+│       └── json_vault.py
+│
+├── tests/                      # Unit tests
+│   ├── test_agents.py
+│   ├── test_aggregator_agent.py
+│   ├── test_calender_reader_agent.py
+│   ├── test_context_agent.py
+│   ├── test_cost_agent.py
+│   ├── test_gmail_reader_agent.py
+│   ├── test_receipt_agent.py
+│   ├── test_usage_agent.py
+│   └── test_vault.py
+│
+├── .env                        # Environment variables
+├── .env.example                # Example env file
+├── .gitignore                  # Git ignore rules
+├── consent_token.json          # Consent token
+├── project_flow.jpg            # Flow diagram
+├── README.md                   # Documentation
+├── requirements.txt            # Python dependencies
+├── test.py                     # Test runner
+└── token.json                  # API/Auth token
+```
