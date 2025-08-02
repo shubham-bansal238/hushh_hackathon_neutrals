@@ -325,6 +325,8 @@ def driver_monitor():
     if os.path.exists(DRIVER_FILE):
         try:
             driver_log = load_encrypted_json(DRIVER_FILE)
+            if driver_log is None:
+                driver_log = {}
         except Exception:
             driver_log = {}
     else:
