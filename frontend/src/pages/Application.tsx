@@ -20,6 +20,15 @@ interface Product {
 
 const Application = () => {
   const navigate = useNavigate();
+  const [userEmail, setUserEmail] = useState("");
+
+  useEffect(() => {
+    fetch("http://localhost:5000/auth/user", { credentials: "include" })
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.email) setUserEmail(data.email);
+      });
+  }, []);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -110,7 +119,7 @@ const Application = () => {
                 <div className="w-12 h-12 bg-sidebar-primary rounded-full flex items-center justify-center mx-auto mb-4">
                   <User className="w-6 h-6 text-sidebar-primary-foreground" />
                 </div>
-                <p className="text-sidebar-foreground text-sm">johndoe@gmail.com</p>
+                <p className="text-sidebar-foreground text-sm">{userEmail}</p>
               </div>
 
               {/* Navigation */}

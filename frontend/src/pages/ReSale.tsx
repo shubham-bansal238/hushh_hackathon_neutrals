@@ -19,6 +19,15 @@ interface Product {
 
 const ReSale = () => {
   const navigate = useNavigate();
+  const [userEmail, setUserEmail] = useState("");
+
+  useEffect(() => {
+    fetch("http://localhost:5000/auth/user", { credentials: "include" })
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.email) setUserEmail(data.email);
+      });
+  }, []);
 
   useEffect(() => {
     fetch("http://localhost:5000/auth/user", { credentials: "include" })
@@ -107,7 +116,7 @@ const ReSale = () => {
                 <div className="w-12 h-12 bg-sidebar-primary rounded-full flex items-center justify-center mx-auto mb-4">
                   <User className="w-6 h-6 text-sidebar-primary-foreground" />
                 </div>
-                <p className="text-sidebar-foreground text-sm">johndoe@gmail.com</p>
+                <p className="text-sidebar-foreground text-sm">{userEmail}</p>
               </div>
 
               {/* Navigation */}
@@ -150,6 +159,13 @@ const ReSale = () => {
               <div className="hidden sm:block text-sm text-muted-foreground">
                 {products.length} total items
               </div>
+              <Button onClick={async () => {
+                await fetch("http://localhost:5000/auth/logout", {
+                  method: "POST",
+                  credentials: "include"
+                });
+                navigate("/");
+              }}>Logout</Button>
               <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
                 <User className="w-4 h-4 text-primary-foreground" />
               </div>

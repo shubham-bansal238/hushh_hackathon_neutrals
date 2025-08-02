@@ -10,6 +10,15 @@ import { useNavigate } from "react-router-dom";
 
 const Settings = () => {
   const navigate = useNavigate();
+  const [userEmail, setUserEmail] = useState("");
+
+  useEffect(() => {
+    fetch("http://localhost:5000/auth/user", { credentials: "include" })
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.email) setUserEmail(data.email);
+      });
+  }, []);
 
   useEffect(() => {
     fetch("http://localhost:5000/auth/user", { credentials: "include" })
@@ -143,7 +152,7 @@ const Settings = () => {
                 <div className="w-12 h-12 bg-sidebar-primary rounded-full flex items-center justify-center mx-auto mb-4">
                   <User className="w-6 h-6 text-sidebar-primary-foreground" />
                 </div>
-                <p className="text-sidebar-foreground text-sm">johndoe@gmail.com</p>
+                <p className="text-sidebar-foreground text-sm">{userEmail}</p>
               </div>
 
               {/* Navigation */}
@@ -186,6 +195,13 @@ const Settings = () => {
               <div className="hidden sm:block text-sm text-muted-foreground">
                 Welcome back!
               </div>
+              <Button onClick={async () => {
+                await fetch("http://localhost:5000/auth/logout", {
+                  method: "POST",
+                  credentials: "include"
+                });
+                navigate("/");
+              }}>Logout</Button>
               <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
                 <User className="w-4 h-4 text-primary-foreground" />
               </div>
@@ -291,30 +307,6 @@ const Settings = () => {
 
                     <div className="flex items-center justify-between p-4 rounded-xl bg-muted/20 hover:bg-muted/30 transition-colors">
                       <div className="flex items-center gap-4">
-                        <div className="p-2 bg-yellow-500/10 rounded-lg">
-                          <Bell className="w-5 h-5 text-yellow-500" />
-                        </div>
-                        <div className="space-y-1">
-                          <Label htmlFor="notifications" className="text-base font-semibold">
-                            Smart Notifications
-                          </Label>
-                          <p className="text-sm text-muted-foreground">
-                            Receive alerts for price drops, resale opportunities, and market trends
-                          </p>
-                        </div>
-                      </div>
-                      <Switch
-                        id="notifications"
-                        checked={permissions.notifications}
-                        onCheckedChange={(checked) => handlePermissionChange('notifications', checked)}
-                        className="data-[state=checked]:bg-primary"
-                      />
-                    </div>
-
-                    <Separator className="bg-border/50" />
-
-                    <div className="flex items-center justify-between p-4 rounded-xl bg-muted/20 hover:bg-muted/30 transition-colors">
-                      <div className="flex items-center gap-4">
                         <div className="p-2 bg-orange-500/10 rounded-lg">
                           <Smartphone className="w-5 h-5 text-orange-500" />
                         </div>
@@ -336,93 +328,9 @@ const Settings = () => {
                     </div>
 
                     <Separator className="bg-border/50" />
-
-                    <div className="flex items-center justify-between p-4 rounded-xl bg-muted/20 hover:bg-muted/30 transition-colors">
-                      <div className="flex items-center gap-4">
-                        <div className="p-2 bg-red-500/10 rounded-lg">
-                          <Lock className="w-5 h-5 text-red-500" />
-                        </div>
-                        <div className="space-y-1">
-                          <Label htmlFor="third-party-sharing" className="text-base font-semibold">
-                            Third-Party Data Sharing
-                          </Label>
-                          <p className="text-sm text-muted-foreground">
-                            Share anonymized data with partners to improve pricing accuracy
-                          </p>
-                        </div>
-                      </div>
-                      <Switch
-                        id="third-party-sharing"
-                        checked={permissions.thirdPartySharing}
-                        onCheckedChange={(checked) => handlePermissionChange('thirdPartySharing', checked)}
-                        className="data-[state=checked]:bg-primary"
-                      />
-                    </div>
                   </div>
                 </CardContent>
               </Card>
-
-              {/* Data Analytics Card */}
-              <Card className="bg-gradient-card border border-border/50 shadow-elegant hover:shadow-glow transition-all duration-300">
-                <CardHeader className="bg-muted/30 rounded-t-xl">
-                  <CardTitle className="flex items-center gap-3 text-xl">
-                    <div className="p-2 bg-primary/10 rounded-lg">
-                      <Database className="w-6 h-6 text-primary" />
-                    </div>
-                    Analytics & Performance
-                  </CardTitle>
-                  <CardDescription className="text-base">
-                    Help us improve RePrice by sharing anonymous usage data
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="p-8">
-                  <div className="flex items-center justify-between p-4 rounded-xl bg-muted/20 hover:bg-muted/30 transition-colors">
-                    <div className="flex items-center gap-4">
-                      <div className="p-2 bg-cyan-500/10 rounded-lg">
-                        <Eye className="w-5 h-5 text-cyan-500" />
-                      </div>
-                      <div className="space-y-1">
-                        <Label htmlFor="analytics" className="text-base font-semibold">
-                          Usage Analytics
-                        </Label>
-                        <p className="text-sm text-muted-foreground">
-                          Share anonymous app usage data to help us improve features and performance
-                        </p>
-                      </div>
-                    </div>
-                    <Switch
-                      id="analytics"
-                      checked={permissions.analytics}
-                      onCheckedChange={(checked) => handlePermissionChange('analytics', checked)}
-                      className="data-[state=checked]:bg-primary"
-                    />
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Action Buttons */}
-              <div className="flex justify-between items-center pt-6">
-                <Button 
-                  variant="outline" 
-                  className="px-8 py-3 text-base border-border/50 hover:bg-muted/50"
-                  onClick={() => setPermissions({
-                    browserHistory: true,
-                    calendarAccess: true,
-                    dataCollection: true,
-                    notifications: true,
-                    analytics: true,
-                    locationAccess: true,
-                    emailTracking: true,
-                    deviceInfo: true,
-                    thirdPartySharing: true,
-                  })}
-                >
-                  Reset to Defaults
-                </Button>
-                <Button className="bg-gradient-primary hover:opacity-90 text-white font-semibold px-12 py-3 text-base rounded-xl shadow-glow">
-                  Save All Settings
-                </Button>
-              </div>
             </div>
           </main>
         </div>
