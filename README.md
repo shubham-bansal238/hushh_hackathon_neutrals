@@ -143,7 +143,7 @@ OAUTHLIB_INSECURE_TRANSPORT=1
 FLASK_SECRET_KEY=your_64_char_hex_here
 ```
 
-*If you want to run the backend proccesses, or the agents for your own account then you have to delete files inside ```jsons``` most importantly delete ```usage.json``` *
+**If you want to run the backend proccesses, or the agents for your own account then you have to delete files inside ```jsons``` most importantly delete** ```usage.json```. **The whole pipeline of agents run automatically after 7 days.**
 
 
 To run frontend
